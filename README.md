@@ -1,16 +1,41 @@
-## Hi there 👋
+# SIMULATORARCHIVE
 
-<!--
-**simulatorarchive/simulatorarchive** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+**Living World Sandbox**
 
-Here are some ideas to get you started:
+I’m building worlds designed to live beyond the player.
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+People have their own lives.  
+Events unfold with or without you.  
+Choices leave consequences behind.
+
+These are not stories waiting for you to begin.  
+They are worlds already in motion.
+
+Every world is built to change, evolve, and continue — whether you are there or not.
+
+> **YOU ARE NOT THE CENTER OF THE WORLD.**  
+> **YOU ARE ENTERING IT.**
+
+---
+
+## WORLD DEVELOPMENT
+
+Feedback, useful criticism, and ideas are always welcome.
+
+New NPCs, locations, factions, items, mechanics, events, and deeper connections between worlds can become part of the archive.
+
+Good suggestions can help expand the worlds.
+
+---
+
+## ARCHIVE
+
+A growing collection of Living Worlds and Simulators built around different universes, settings, and genres.
+
+**16 SIMULATORS · 20 LIVING WORLDS**
+
+> **Come for the characters. Stay for the world.**
+
+---
+
+**ARCHIVE OPENED · JUNE 26, 2026**
