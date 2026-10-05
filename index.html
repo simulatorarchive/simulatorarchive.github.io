@@ -52,6 +52,10 @@
       text-transform: uppercase;
       white-space: nowrap;
     }
+    @keyframes archiveOnlinePulse {
+      0%, 100% { color: #59626e; opacity: 1; }
+      50% { color: #08090b; opacity: .78; }
+    }
     .archive-status::before {
       content: "";
       width: 5px;
@@ -59,6 +63,7 @@
       border-radius: 50%;
       background: #8f98a4;
       box-shadow: 0 0 0 4px rgba(143,152,164,.07);
+      animation: archiveOnlineDot 1.8s ease-in-out infinite;
     }
     .brand {
       text-decoration: none;
@@ -617,7 +622,7 @@
           <a class="card has-cover" style="--accent:#5fa8d3" data-name="DC Earth 0 Living World" data-type="live" href="https://janitorai.com/characters/91ef9c77-53ce-4e95-811b-0d8efe707ffc_character-dc-earth-0-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/DCEARTH0LIVINGWORLD.png" alt="DC Earth 0 Living World cover"><span class="index">05</span><span class="type">Live</span><h3>DC Earth 0 Living World</h3><p>Gotham, Metropolis and a wider world independent of the player.</p></a>
           <a class="card has-cover" style="--accent:#8d96a3" data-name="SCP Simulator" data-type="original" href="https://janitorai.com/characters/fb840fa6-b297-46cc-8a62-75ca96251140_character-scp-simulator" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/SCPSIMULATOR.png" alt="SCP Simulator cover"><span class="index">06</span><span class="type">Other</span><h3>SCP Simulator</h3><p>Anomalies, personnel, facilities and consequences.</p></a>
           <a class="card has-cover" style="--accent:#d98aa5" data-name="Neon Genesis Evangelion Living World" data-type="anime" href="https://janitorai.com/characters/a65114cb-3f87-4c1d-b117-a1c03ebf88e1_character-neon-genesis-evangelion-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/NEONGENEZISEVAGELIONLIVINGWORLD.png" alt="Neon Genesis Evangelion Living World cover"><span class="index">07</span><span class="type">Anime</span><h3>Neon Genesis Evangelion Living World</h3><p>Tokyo-3, institutions, pilots and life between crises.</p></a>
-          <a class="card" style="--accent:#b7c86f" data-name="Solo Leveling Living World" data-type="anime" href="https://janitorai.com/characters/ffe6abb0-942b-4d8f-a5dd-91e35b11dc30_character-solo-leveling-living-world" target="_blank" rel="noopener noreferrer"><span class="index">08</span><span class="type">Anime</span><h3>Solo Leveling Living World</h3><p>Hunters, gates, guilds and a changing modern world.</p></a>
+          <a class="card has-cover" style="--accent:#b7c86f" data-name="Solo Leveling Living World" data-type="anime" href="https://janitorai.com/characters/ffe6abb0-942b-4d8f-a5dd-91e35b11dc30_character-solo-leveling-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/SOLOLEVELINGLIVINGWORLD.png" alt="Solo Leveling Living World cover"><span class="index">08</span><span class="type">Anime</span><h3>Solo Leveling Living World</h3><p>Hunters, gates, guilds and a changing modern world.</p></a>
           <a class="card has-cover" style="--accent:#c9cbd1" data-name="Attack on Titan Living World" data-type="anime" href="https://janitorai.com/characters/4a261630-818f-447c-adb5-ac60436929d7_character-attack-on-titan-simulator" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/ATTACKONTITANLIVINGWORLD.png" alt="Attack on Titan Living World cover"><span class="index">09</span><span class="type">Anime</span><h3>Attack on Titan Living World</h3><p>Military life, walls, politics and dangerous shifting conditions.</p></a>
           <a class="card has-cover" style="--accent:#ef8d45" data-name="One Punch Man Living World" data-type="anime" href="https://janitorai.com/characters/b5ad9a3a-c9cd-44e7-aa0e-d89bba80ba2e_character-one-punch-man-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/ONEPUNCHMANLIVINGWORLD.png" alt="One Punch Man Living World cover"><span class="index">10</span><span class="type">Anime</span><h3>One Punch Man Living World</h3><p>Hero ranks, cities, monsters and ordinary life around them.</p></a>
           <a class="card has-cover" style="--accent:#f0a65a" data-name="Naruto Living World" data-type="anime" href="https://janitorai.com/characters/ecc32806-fe43-4b1c-9fd4-158c89c76fee_character-naruto-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/NARUTOLIVINGWORLD.png" alt="Naruto Living World cover"><span class="index">11</span><span class="type">Anime</span><h3>Naruto Living World</h3><p>Villages, shinobi, missions and lives beyond the main cast.</p></a>
