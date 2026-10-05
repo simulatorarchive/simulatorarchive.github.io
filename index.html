@@ -407,6 +407,15 @@
       opacity: .82;
       filter: saturate(.86) contrast(1.04);
     }
+    .season-cover-link {
+      display: block;
+      transition: transform .22s ease, opacity .22s ease, border-color .22s ease;
+    }
+    .season-cover-link:hover { transform: translateY(-3px); }
+    .season-cover-link:hover .season-cover {
+      opacity: 1;
+      border-color: rgba(196,167,107,.42);
+    }
     .season h3 { margin: 0 0 6px; color: #d9dde2; font: 600 28px/1 Georgia,serif; }
     .season p { margin: 0; color: #707985; font-size: 11px; line-height: 1.6; }
     .season a {
@@ -654,7 +663,7 @@
           <p>Limited archive events</p>
         </div>
         <div class="season">
-          <img class="season-cover" src="images/OCTOBERARCHIVE.png" alt="October Archive Horror Season cover">
+          <a class="season-cover-link" href="https://janitorai.com/characters/81d629a8-5d4f-416a-9266-de885825c7e8_character-october-archive" target="_blank" rel="noopener noreferrer"><img class="season-cover" src="images/OCTOBERARCHIVE.png" alt="October Archive Horror Season cover"></a>
           <div>
             <h3>October Archive Horror Season</h3>
             <p>A seasonal archive entry for October. Explore the announcement, follow the clues, and let some files remain a mystery.</p>
