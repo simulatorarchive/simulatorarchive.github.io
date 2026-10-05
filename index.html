@@ -274,7 +274,7 @@
     .card {
       --accent: #aeb4bd;
       position: relative;
-      min-height: 176px;
+      min-height: 214px;
       border: 1px solid rgba(180,190,200,.10);
       background:
         linear-gradient(to bottom, color-mix(in srgb, var(--accent) 7%, #111114) 0, color-mix(in srgb, var(--accent) 3%, #111114) 108px, #0b0b0e 108px),
@@ -282,7 +282,7 @@
         linear-gradient(160deg, #111114 0%, #0b0b0e 100%);
       text-decoration: none;
       overflow: hidden;
-      padding: 20px 18px 18px 44px;
+      padding: 142px 18px 18px 44px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -352,7 +352,24 @@
       font-size: 9px;
       line-height: 1.5;
     }
-    .card.has-cover { padding-top: 126px; }
+    .card.has-cover { padding-top: 142px; }
+    .card:not(.has-cover)::after {
+      content: "ARCHIVE COVER";
+      top: 52px;
+      right: 0;
+      bottom: auto;
+      width: 100%;
+      text-align: center;
+      color: color-mix(in srgb, var(--accent) 34%, #4d5662);
+      font-size: 9px;
+      letter-spacing: .24em;
+      opacity: .65;
+      transform: none;
+    }
+    .card:not(.has-cover):hover::after {
+      opacity: .85;
+      transform: none;
+    }
     .card-cover {
       position: absolute;
       top: 0;
