@@ -1520,6 +1520,50 @@
     .archive-flash { display:none; }
   }
 
+  
+  .obj-unknown .unknown-core {
+    position:absolute;
+    left:67px;
+    top:22px;
+    width:88px;
+    height:88px;
+    border:1px solid rgba(205,214,224,.34);
+    border-radius:50%;
+    box-shadow:0 0 26px rgba(191,205,220,.13),inset 0 0 26px rgba(191,205,220,.08);
+    transform:rotate(0deg);
+    animation:unknownRotate 5.5s linear infinite;
+  }
+  .obj-unknown .unknown-core::before {
+    content:"";
+    position:absolute;
+    inset:14px;
+    border:1px dashed rgba(205,214,224,.20);
+    border-radius:50%;
+  }
+  .obj-unknown .unknown-core::after {
+    content:"?";
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    color:rgba(224,230,236,.62);
+    font:600 30px Georgia,serif;
+  }
+  .obj-unknown .unknown-core i {
+    position:absolute;
+    width:5px;
+    height:5px;
+    border:1px solid rgba(220,228,235,.62);
+    background:#080b0f;
+    border-radius:50%;
+  }
+  .obj-unknown .unknown-core i:nth-child(1) { left:8px; top:38px; }
+  .obj-unknown .unknown-core i:nth-child(2) { right:8px; top:25px; }
+  .obj-unknown .unknown-core i:nth-child(3) { right:22px; bottom:7px; }
+  @keyframes unknownRotate {
+    to { transform:rotate(360deg); }
+  }
+
   </style>
 </head>
 <body>
@@ -1952,10 +1996,11 @@
       setAmbient(kind, color);
       flashAt(18 + Math.random() * 64, 20 + Math.random() * 60, color);
 
-      el.addEventListener("animationend", function() {
+      el.addEventListener("animationend", function(event) {
+        if (event.target !== el) return;
         setAmbient("neutral","#cbd3dc");
         el.remove();
-      }, { once:true });
+      });
 
       const removeAfter = 15.5 * 1000;
       setTimeout(function() { if (el.isConnected) el.remove(); }, removeAfter);
