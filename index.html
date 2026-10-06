@@ -2313,9 +2313,11 @@
           <div class="modal-cell"><span>Format</span><b id="modalFormat">UNKNOWN</b></div>
           <div class="modal-cell"><span>Status</span><b id="modalStatus">UNRESOLVED</b></div>
           <div class="modal-cell"><span>Activity</span><b id="modalActivity">UNKNOWN</b></div>
-          <div class="modal-cell"><span>Region</span><b id="modalRegion">UNKNOWN</b></div>
-          <div class="modal-cell"><span>Continuation</span><b id="modalContinuation">OBSERVING</b></div>
+          <div class="modal-cell"><span>Setting</span><b id="modalSetting">UNKNOWN</b></div>
+          <div class="modal-cell"><span>Era</span><b id="modalEra">UNKNOWN</b></div>
           <div class="modal-cell"><span>World model</span><b id="modalModel">INDEPENDENT</b></div>
+          <div class="modal-cell"><span>Continuation</span><b id="modalContinuation">OBSERVING</b></div>
+          <div class="modal-cell"><span>Source basis</span><b id="modalSource">UNKNOWN</b></div>
           <div class="modal-cell"><span>Integrity</span><b id="modalIntegrity">UNRESOLVED</b></div>
         </div>
         <div class="related-files">
@@ -2862,7 +2864,9 @@
     const modalFormat = document.getElementById("modalFormat");
     const modalStatus = document.getElementById("modalStatus");
     const modalActivity = document.getElementById("modalActivity");
-    const modalRegion = document.getElementById("modalRegion");
+    const modalSetting = document.getElementById("modalSetting");
+    const modalEra = document.getElementById("modalEra");
+    const modalSource = document.getElementById("modalSource");
     const modalContinuation = document.getElementById("modalContinuation");
     const modalSerial = document.getElementById("modalSerial");
     const modalAccessStamp = document.getElementById("modalAccessStamp");
@@ -2875,50 +2879,156 @@
     const modalFooterRight = document.getElementById("modalFooterRight");
     const modalOpenWorld = document.getElementById("modalOpenWorld");
 
-    const relatedMap = {
-      "starwars":[["021","CLONE WARS ANY LIFE SIMULATOR"]],
-      "clonewars":[["001","STAR WARS SIMULATOR"]],
-      "marvel":[["006","DC EARTH 0 LIVING WORLD"]],
-      "dc":[["005","MARVEL EARTH 616 LIVING WORLD"]],
-      "cyberpunk":[["020","WATCH DOGS LIVING WORLD"]],
-      "watchdogs":[["016","CYBERPUNK 2077 LIVING WORLD"]],
-      "witcher":[["023","CASTLEVANIA LIVING WORLD"]],
-      "castlevania":[["024","BERSERK LIVING WORLD"]],
-      "berserk":[["023","CASTLEVANIA LIVING WORLD"]],
-      "dragonball":[["012","NARUTO LIVING WORLD"]],
-      "naruto":[["013","DRAGON BALL LIVING WORLD"]],
-      "deathnote":[["007","SCP SIMULATOR"]],
-      "scp":[["019","DEATH NOTE LIVING WORLD"]],
-      "eva":[["015","THE WALTEN FILES LIVING WORLD"]],
-      "walten":[["008","NEON GENESIS EVANGELION LIVING WORLD"]],
-      "solo":[["025","JUJUTSU KAISEN LIVING WORLD"]],
-      "jjk":[["009","SOLO LEVELING LIVING WORLD"]]
-    };
-    const regionMap = {
-      "starwars":"GALACTIC SPACE","onepiece":"GRAND LINE","harry":"UNITED KINGDOM","breakingbad":"ALBUQUERQUE, NM",
-      "marvel":"EARTH-616","dc":"EARTH-0","scp":"SITE NETWORK","eva":"TOKYO-3, JAPAN","solo":"SOUTH KOREA",
-      "aot":"PARADIS / MAINLAND","opm":"HERO ASSOCIATION WORLD","naruto":"SHINOBI WORLD","dragonball":"EARTH",
-      "bluelock":"JAPAN","walten":"BRIGHTON, COLORADO","cyberpunk":"NIGHT CITY","witcher":"THE CONTINENT",
-      "jojo":"MULTIPLE ERAS","deathnote":"TOKYO, JAPAN","watchdogs":"CHICAGO, IL","clonewars":"GALACTIC REPUBLIC",
-      "hutt":"OUTER RIM","castlevania":"WALLACHIA","berserk":"MIDLAND","jjk":"TOKYO, JAPAN"
+    const dossierData = {
+      "001": {
+        format:"SIMULATOR", setting:"GALACTIC SPACE", era:"MULTIPLE CANON ERAS",
+        source:"STAR WARS CANON", summary:"A broad galactic sandbox of civilian life, factions, travel, conflict and events that continue beyond any single visitor.",
+        related:[["021","CLONE WARS ANY LIFE SIMULATOR"],["022","HUTT SIMULATOR"]]
+      },
+      "002": {
+        format:"LIVING WORLD", setting:"GRAND LINE / FOUR BLUES", era:"GREAT PIRATE ERA",
+        source:"ONE PIECE CANON", summary:"Pirates, marines, islands, trade and local lives continue while voyages and conflicts develop without waiting for the visitor.",
+        related:[]
+      },
+      "003": {
+        format:"SIMULATOR", setting:"HOGWARTS / WIZARDING WORLD", era:"HOGWARTS ERA",
+        source:"WIZARDING WORLD", summary:"School life, magical routines, rivalries and the wider wizarding world continue beyond a single chosen storyline.",
+        related:[]
+      },
+      "004": {
+        format:"LIVING WORLD", setting:"ALBUQUERQUE, NEW MEXICO", era:"2008–2010",
+        source:"AMC SERIES", summary:"The Albuquerque underworld, law enforcement, family pressure and ordinary lives continue alongside the consequences of the series.",
+        related:[]
+      },
+      "005": {
+        format:"LIVING WORLD", setting:"EARTH-616", era:"CONTINUING MARVEL TIMELINE",
+        source:"MARVEL COMICS", summary:"Heroes, villains, civilians and institutions occupy the same continuing Earth-616 world, where everyday life exists between larger events.",
+        related:[]
+      },
+      "006": {
+        format:"LIVING WORLD", setting:"EARTH-0 / PRIME EARTH", era:"MODERN DC CONTINUITY",
+        source:"DC COMICS", summary:"Gotham, Metropolis and the wider Prime Earth remain active beyond any single hero, with civilian and institutional lives moving alongside major events.",
+        related:[]
+      },
+      "007": {
+        format:"SIMULATOR", setting:"GLOBAL SITE NETWORK", era:"CONTEMPORARY / VARIABLE",
+        source:"SCP WIKI", summary:"Facilities, personnel, procedures and anomalies operate under uncertain conditions, with consequences determined by what happens inside the archive.",
+        related:[]
+      },
+      "008": {
+        format:"LIVING WORLD", setting:"TOKYO-3, JAPAN", era:"2015",
+        source:"EVANGELION SERIES", summary:"Tokyo-3, NERV, school life and the people around the pilots continue through the uneasy spaces between catastrophic events.",
+        related:[]
+      },
+      "009": {
+        format:"LIVING WORLD", setting:"SOUTH KOREA / GATE NETWORK", era:"CONTEMPORARY",
+        source:"SOLO LEVELING", summary:"Hunters, guilds, gates, businesses and ordinary citizens share a changing modern world shaped by the growing supernatural threat.",
+        related:[]
+      },
+      "010": {
+        format:"LIVING WORLD", setting:"PARADIS / MARLEY", era:"WALL ERA / VARIABLE",
+        source:"ATTACK ON TITAN", summary:"Military service, civilian survival, political pressure and life behind the walls exist independently of the central characters.",
+        related:[]
+      },
+      "011": {
+        format:"LIVING WORLD", setting:"HERO ASSOCIATION CITIES", era:"CONTEMPORARY",
+        source:"ONE-PUNCH MAN", summary:"Hero rankings, cities, monsters, businesses and ordinary residents form a living society whose crises do not pause for the visitor.",
+        related:[]
+      },
+      "012": {
+        format:"LIVING WORLD", setting:"HIDDEN VILLAGES / FIVE GREAT NATIONS", era:"SHINOBI ERA",
+        source:"NARUTO CANON", summary:"Villages, clans, shinobi careers, trade and local politics continue across a world structured around competing hidden villages and nations.",
+        related:[]
+      },
+      "013": {
+        format:"LIVING WORLD", setting:"EARTH / WIDER UNIVERSE", era:"DRAGON BALL ERA",
+        source:"DRAGON BALL CANON", summary:"Travel, martial arts, towns, technology and extraordinary encounters coexist with the quieter routines of everyday life.",
+        related:[]
+      },
+      "014": {
+        format:"LIVING WORLD", setting:"BLUE LOCK FACILITY, JAPAN", era:"CONTEMPORARY",
+        source:"BLUE LOCK", summary:"Players compete, train, form rivalries and build football careers inside a pressure system designed to continuously test their development.",
+        related:[]
+      },
+      "015": {
+        format:"LIVING WORLD", setting:"BRIGHTON, COLORADO", era:"1970s–1980s",
+        source:"THE WALTEN FILES", summary:"Ordinary places, business records, missing histories and unsettling traces coexist in a setting where the past never feels fully closed.",
+        related:[]
+      },
+      "016": {
+        format:"LIVING WORLD", setting:"NIGHT CITY, CALIFORNIA", era:"2077",
+        source:"CYBERPUNK 2077", summary:"Mega-corporations, gangs, fixers, mercenaries, workers and civilians keep Night City moving on schedules that do not depend on the visitor.",
+        related:[["020","WATCH DOGS LIVING WORLD"]]
+      },
+      "017": {
+        format:"LIVING WORLD", setting:"THE CONTINENT", era:"MEDIEVAL FANTASY",
+        source:"THE WITCHER GAME MATERIAL", summary:"Settlements, monster contracts, politics, trade and dangerous roads persist across a morally complicated Continent shaped by choices and consequences.",
+        related:[]
+      },
+      "018": {
+        format:"LIVING WORLD", setting:"MULTIPLE LOCATIONS / GENERATIONS", era:"MULTIPLE ERAS",
+        source:"JOJO'S BIZARRE ADVENTURE", summary:"Generations, cities, families, Stand users and personal rivalries form a world that keeps changing across different periods and locations.",
+        related:[]
+      },
+      "019": {
+        format:"LIVING WORLD", setting:"TOKYO, JAPAN", era:"CONTEMPORARY / 2000s",
+        source:"DEATH NOTE CANON", summary:"Tokyo continues through investigations, careers, family life and uncertainty while the central threat remains only one part of a larger society.",
+        related:[]
+      },
+      "020": {
+        format:"LIVING WORLD", setting:"CONNECTED MODERN CITIES", era:"2010s–2020s",
+        source:"UBISOFT GAME MATERIAL", summary:"Urban routines, surveillance systems, hackers, criminal networks and competing interests keep cities active beyond any single protagonist.",
+        related:[]
+      },
+      "021": {
+        format:"LIFE SIMULATOR", setting:"GALACTIC REPUBLIC / CLONE WAR FRONTS", era:"22–19 BBY",
+        source:"STAR WARS CANON", summary:"Military and civilian life unfolds across the Clone Wars, with clone armies, Jedi, Separatists, local populations and fronts operating simultaneously.",
+        related:[["001","STAR WARS SIMULATOR"],["022","HUTT SIMULATOR"]]
+      },
+      "022": {
+        format:"SIMULATOR", setting:"OUTER RIM / HUTT SPACE", era:"VARIABLE",
+        source:"STAR WARS CANON", summary:"Underworld businesses, debt, protection, trade and shifting loyalties create a criminal economy operating beyond the formal institutions of the Republic.",
+        related:[["001","STAR WARS SIMULATOR"],["021","CLONE WARS ANY LIFE SIMULATOR"]]
+      },
+      "023": {
+        format:"LIVING WORLD", setting:"WALLACHIA", era:"15TH CENTURY",
+        source:"NETFLIX CASTLEVANIA", summary:"Roads, villages, faith, monsters and ordinary people continue through a dangerous medieval Wallachia where catastrophe is never the only story.",
+        related:[]
+      },
+      "024": {
+        format:"LIVING WORLD", setting:"MIDLAND / CONTINENT", era:"MEDIEVAL FANTASY",
+        source:"BERSERK · 1997 ANIME", summary:"Mercenaries, soldiers, towns and travelers struggle through a harsh medieval world where survival and consequence matter far beyond the central cast.",
+        related:[]
+      },
+      "025": {
+        format:"LIVING WORLD", setting:"TOKYO, JAPAN", era:"CONTEMPORARY",
+        source:"JUJUTSU KAISEN CANON", summary:"Sorcerers, curses, schools and ordinary citizens occupy the same modern society while unseen supernatural threats continue beneath everyday life.",
+        related:[]
+      }
     };
 
-    function getWorldKind(name) {
-      const lower = (name || "").toLowerCase();
-      for (let i=0;i<focusMap.length;i++) {
-        if (lower.includes(focusMap[i][0])) return focusMap[i][1];
+    function setDossierClassification(status) {
+      archiveModalPanel.className="archive-modal-panel classification-" + String(status || "UNKNOWN").toLowerCase();
+    }
+
+    function setRelatedFiles(related) {
+      if (!related || !related.length) {
+        relatedList.innerHTML="<div class='related-empty'>NO DIRECT ARCHIVE RELATIONS</div>";
+        return;
       }
-      return null;
+      relatedList.innerHTML=related.slice(0,2).map(function(rel){
+        return "<button class='related-file' type='button' data-related-id='" + rel[0] + "'><span class='related-main'><span class='related-id'>FILE " + rel[0] + "</span><strong>" + rel[1] + "</strong></span><span class='related-state'>INDEXED</span></button>";
+      }).join("");
+      relatedList.querySelectorAll(".related-file").forEach(function(btn){
+        btn.addEventListener("click",function(){
+          const relatedCard=document.querySelector('#featuredGrid .card[data-archive-id="' + btn.dataset.relatedId + '"]');
+          if(relatedCard){ openArchiveModal(relatedCard); pushActivity("RELATED FILE","FILE " + btn.dataset.relatedId,"OBSERVING"); }
+        });
+      });
     }
-    function formatType(name, type) {
-      const lower=(name||"").toLowerCase();
-      if (lower.includes("any life simulator")) return "LIFE SIMULATOR";
-      if (lower.includes("simulator")) return "SIMULATOR";
-      if (lower.includes("living world")) return "LIVING WORLD";
-      return type ? type.toUpperCase() : "ARCHIVE";
-    }
+
     function setModalUnknown() {
-      archiveModalPanel.className="archive-modal-panel classification-unknown";
+      setDossierClassification("UNKNOWN");
       modalSerial.textContent="FILE ??";
       modalAccessStamp.textContent="UNVERIFIED";
       modalKicker.textContent="UNINDEXED ARCHIVE FILE";
@@ -2928,52 +3038,48 @@
       modalFormat.textContent="UNKNOWN";
       modalStatus.textContent="UNRESOLVED";
       modalActivity.textContent="UNKNOWN";
-      modalRegion.textContent="UNKNOWN";
-      modalContinuation.textContent="OBSERVING";
+      modalSetting.textContent="UNKNOWN";
+      modalEra.textContent="UNKNOWN";
       modalModel.textContent="INDEPENDENT";
+      modalContinuation.textContent="OBSERVING";
+      modalSource.textContent="UNRESOLVED";
       modalIntegrity.textContent="UNRESOLVED";
       modalFooterLeft.textContent="ARCHIVE RECORD · ??";
       modalFooterRight.textContent="OBSERVATION CONTINUES";
-      relatedList.innerHTML="<div class='related-empty'>NO STABLE RELATIONS FOUND · RECORD INCOMPLETE</div>";
+      relatedList.innerHTML="<div class='related-empty'>NO DIRECT ARCHIVE RELATIONS</div>";
       modalOpenWorld.classList.add("hidden");
       modalOpenWorld.removeAttribute("href");
     }
+
     function setModalWorld(card) {
-      const name=card.dataset.name || "Unknown World";
       const id=card.dataset.archiveId || "??";
+      const data=dossierData[id] || {};
+      const name=card.dataset.name || "Unknown World";
       const status=card.dataset.status || "STABLE";
       const activity=card.dataset.activity || "ONGOING";
-      const type=card.dataset.type || "archive";
-      const kind=getWorldKind(name);
-      modalKicker.textContent="ARCHIVE DOSSIER · INDEXED FILE";
-      archiveModalPanel.className="archive-modal-panel classification-" + status.toLowerCase();
+      setDossierClassification(status);
       modalSerial.textContent="FILE " + id;
-      modalAccessStamp.textContent = status === "RESTRICTED" ? "RESTRICTED ACCESS" : status === "ANOMALOUS" ? "ANOMALOUS RECORD" : status === "ACTIVE" ? "ACTIVE RECORD" : "ARCHIVE VERIFIED";
+      modalAccessStamp.textContent=status === "RESTRICTED" ? "RESTRICTED ACCESS" : status === "ANOMALOUS" ? "ANOMALOUS RECORD" : status === "ACTIVE" ? "ACTIVE RECORD" : "ARCHIVE VERIFIED";
+      modalKicker.textContent="ARCHIVE DOSSIER · INDEXED FILE";
       modalTitle.textContent=name;
-      modalCopy.textContent="Indexed world record. The world continues independently of the visitor.";
+      modalCopy.textContent=data.summary || "Indexed world record.";
       modalFile.textContent="FILE " + id;
-      modalFormat.textContent=formatType(name,type);
+      modalFormat.textContent=data.format || "ARCHIVE";
       modalStatus.textContent=status;
       modalActivity.textContent=activity;
-      modalRegion.textContent=regionMap[kind] || "ARCHIVE REGION";
-      modalContinuation.textContent="ONGOING";
+      modalSetting.textContent=data.setting || "UNKNOWN";
+      modalEra.textContent=data.era || "VARIABLE";
       modalModel.textContent="INDEPENDENT";
+      modalContinuation.textContent="ONGOING";
+      modalSource.textContent=data.source || "ARCHIVE INDEX";
       modalIntegrity.textContent="VALID";
       modalFooterLeft.textContent="ARCHIVE RECORD · FILE " + id;
       modalFooterRight.textContent="OBSERVATION CONTINUES";
-      const relatedIds=relatedMap[kind] || [];
-      relatedList.innerHTML=relatedIds.length ? relatedIds.slice(0,2).map(function(rel){
-        return "<button class='related-file' type='button' data-related-id='" + rel[0] + "'><span class='related-main'><span class='related-id'>FILE " + rel[0] + "</span><strong>" + rel[1] + "</strong></span><span class='related-state'>INDEXED</span></button>";
-      }).join("") : "<div class='related-empty'>NO STABLE RELATIONS FOUND · ARCHIVE CLASSIFICATION ONLY</div>";
-      relatedList.querySelectorAll(".related-file").forEach(function(btn){
-        btn.addEventListener("click",function(){
-          const relatedCard=document.querySelector('#featuredGrid .card[data-archive-id="' + btn.dataset.relatedId + '"]');
-          if(relatedCard){ openArchiveModal(relatedCard); pushActivity("RELATED FILE","FILE " + btn.dataset.relatedId,"OBSERVING"); }
-        });
-      });
+      setRelatedFiles(data.related || []);
       modalOpenWorld.href=card.href;
       modalOpenWorld.classList.remove("hidden");
     }
+
     function openArchiveModal(card) {
       if (card) setModalWorld(card); else setModalUnknown();
       archiveModal && archiveModal.classList.add("open");
