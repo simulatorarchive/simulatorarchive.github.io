@@ -2276,6 +2276,7 @@
 
       setAmbient(kind, color);
       flashAt(18 + Math.random() * 64, 20 + Math.random() * 60, color);
+      pushActivity("OBJECT DETECTED", name, rarity === "rare" ? "UNUSUAL" : "INDEX " + number);
 
       const duration = parseFloat(getComputedStyle(el).animationDuration) * 1000;
       el.addEventListener("animationend", function(event) {
@@ -2342,6 +2343,7 @@
       if (!detectedFile) return;
       detectedFile.classList.add("show");
       showRuntime("NEW SIGNAL DETECTED","Unindexed archive file · review available");
+      pushActivity("FILE DETECTED","UNKNOWN ENTRY","UNRESOLVED");
       setTimeout(function() { detectedFile.classList.remove("show"); }, 7200);
     }
     function openArchiveModal() {
@@ -2380,6 +2382,7 @@
         if (activeItem) {
           setAmbient(activeItem[0], activeItem[3]);
           showRuntime("WORLD FOCUS · " + activeItem[1],"Next archive object biased toward FILE " + activeItem[2]);
+          pushActivity("WORLD FOCUS", activeItem[1], "OBSERVING");
         }
       });
 
@@ -2418,6 +2421,17 @@
     const activityClock = document.getElementById("activityClock");
     const worldCount = document.getElementById("worldCount");
     const seasonCount = document.getElementById("seasonCount");
+    const liveActivity = [];
+    function pushActivity(action, subject, state) {
+      liveActivity.unshift({
+        time: currentTime(),
+        action: action,
+        subject: subject,
+        state: state
+      });
+      if (liveActivity.length > 6) liveActivity.length = 6;
+      renderActivity();
+    }
     function currentTime() {
       return new Date().toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
     }
@@ -2446,7 +2460,13 @@
     function renderActivity() {
       if (!activityList) return;
       const entries = [];
-      for (let i = 0; i < 6; i++) {
+      if (liveActivity.length) {
+        liveActivity.forEach(function(item) {
+          entries.push("<div class='activity-entry'><time>" + item.time + "</time><strong>" + item.action + " · " + item.subject + "</strong><span class='entry-state'>" + item.state + "</span></div>");
+        });
+      }
+      const needed = 6 - entries.length;
+      for (let i = 0; i < needed; i++) {
         const item = activityPool[(activityOffset + i) % activityPool.length];
         const d = new Date(Date.now() - (i * 4 + 1) * 60000);
         const time = d.toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
@@ -2455,10 +2475,6 @@
       activityList.innerHTML = entries.join("");
     }
     renderActivity();
-    setInterval(function() {
-      activityOffset = (activityOffset + 1) % activityPool.length;
-      renderActivity();
-    }, 6500);
 
     const archiveAmbientBase = document.getElementById("archiveAmbient");
     window.addEventListener("scroll", function() {
@@ -2501,7 +2517,14 @@
     updateSignal();
     setInterval(updateSignal,5200);
 
-    setTimeout(showDetectedFile, 48000 + Math.random() * 28000);
+    function scheduleDetectedFile(first) {
+      const delay = first ? (42000 + Math.random() * 30000) : (145000 + Math.random() * 115000);
+      setTimeout(function() {
+        showDetectedFile();
+        scheduleDetectedFile(false);
+      }, delay);
+    }
+    scheduleDetectedFile(true);
 
 
   </script>
