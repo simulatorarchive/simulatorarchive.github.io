@@ -1395,6 +1395,131 @@
     .archive-object { opacity:.06 !important; transform:none !important; }
   }
 
+  
+  .archive-ambient {
+    position:absolute;
+    inset:-18%;
+    pointer-events:none;
+    border-radius:50%;
+    background:radial-gradient(circle at 50% 50%, var(--ambient-color, rgba(150,160,176,.08)), transparent 58%);
+    filter:blur(26px);
+    opacity:.68;
+    transform:translate3d(var(--ambient-x,0px),var(--ambient-y,0px),0) scale(1);
+    transition:background .9s ease,opacity .9s ease,transform .15s ease;
+  }
+  .archive-depth {
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .depth-line {
+    position:absolute;
+    height:1px;
+    background:linear-gradient(90deg,transparent,rgba(210,218,226,.08),transparent);
+    opacity:.35;
+    transform:translate3d(var(--dx),0,0) rotate(var(--rot));
+    animation:depthDrift var(--dur) linear infinite;
+  }
+  .depth-line.l1 { width:38vw; top:18%; left:-8vw; --dx:17vw; --rot:-12deg; --dur:28s; opacity:.22; }
+  .depth-line.l2 { width:42vw; top:69%; left:46vw; --dx:-28vw; --rot:8deg; --dur:34s; opacity:.18; }
+  .depth-line.l3 { width:24vw; top:38%; left:80vw; --dx:-36vw; --rot:-6deg; --dur:41s; opacity:.14; }
+  @keyframes depthDrift {
+    from { transform:translate3d(0,0,0) rotate(var(--rot)); }
+    to { transform:translate3d(var(--dx),0,0) rotate(var(--rot)); }
+  }
+  .world-network {
+    position:absolute;
+    inset:12px;
+    z-index:0;
+    width:calc(100% - 24px);
+    height:calc(100% - 24px);
+    opacity:.72;
+  }
+  .world-network line {
+    stroke:rgba(206,214,222,.10);
+    stroke-width:1;
+    vector-effect:non-scaling-stroke;
+    transition:stroke .45s ease,stroke-width .45s ease,opacity .45s ease;
+  }
+  .world-network circle {
+    fill:rgba(210,218,226,.14);
+    stroke:rgba(210,218,226,.16);
+    stroke-width:1;
+    vector-effect:non-scaling-stroke;
+    transition:fill .45s ease,stroke .45s ease,r .45s ease,filter .45s ease;
+  }
+  .world-network text {
+    fill:rgba(210,218,226,.17);
+    font:700 7px ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.16em;
+  }
+  .world-network .network-active {
+    fill:var(--network-color,#cbd3dc);
+    stroke:rgba(255,255,255,.35);
+    filter:drop-shadow(0 0 8px var(--network-color,#cbd3dc));
+  }
+  .hero-aside .mark,
+  .hero-aside small,
+  .hero-aside .index-box { z-index:2; }
+
+  .archive-flash {
+    position:fixed;
+    inset:0;
+    z-index:2;
+    pointer-events:none;
+    background:radial-gradient(circle at var(--flash-x,50%) var(--flash-y,50%), var(--flash-color, rgba(220,226,233,.10)), transparent 22%);
+    opacity:0;
+  }
+  .archive-flash.fire {
+    animation:archiveFlash .8s ease-out both;
+  }
+  @keyframes archiveFlash {
+    0% { opacity:0; }
+    18% { opacity:.78; }
+    100% { opacity:0; }
+  }
+
+  .card .meta-row {
+    position:relative;
+    z-index:4;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:2px 15px 10px 18px;
+    min-height:10px;
+    color:#555f6a;
+    font:700 7px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+    opacity:.88;
+  }
+  .card .meta-row .state {
+    color:#7d8792;
+  }
+  .card .meta-row .state::before {
+    content:"";
+    display:inline-block;
+    width:4px;
+    height:4px;
+    margin-right:5px;
+    border-radius:50%;
+    vertical-align:1px;
+    background:currentColor;
+    box-shadow:0 0 7px currentColor;
+  }
+  .card.world-focused {
+    z-index:7;
+    border-color:color-mix(in srgb,var(--accent) 65%,rgba(220,226,232,.20));
+  }
+  .card.world-focused::before { opacity:1; box-shadow:0 0 18px color-mix(in srgb,var(--accent) 40%,transparent); }
+  .card.world-focused .card-cover { opacity:1; filter:saturate(1.05) contrast(1.09); }
+
+  @media (max-width:640px) {
+    .world-network { opacity:.46; }
+    .archive-flash { display:none; }
+  }
+
   </style>
 </head>
 <body>
@@ -1402,7 +1527,10 @@
 
     <div class="archive-atmosphere" aria-hidden="true">
       <div class="archive-noise"></div>
+      <div class="archive-depth"><span class="depth-line l1"></span><span class="depth-line l2"></span><span class="depth-line l3"></span></div>
       <div class="archive-scanline"></div>
+      <div class="archive-ambient" id="archiveAmbient"></div>
+      <div class="archive-flash" id="archiveFlash"></div>
       <div class="archive-particles" id="archiveParticles"></div>
       <div class="archive-objects" id="archiveObjects"></div>
     </div>
@@ -1441,6 +1569,28 @@
             </p>
           </div>
           <aside class="hero-aside">
+            
+              <svg class="world-network" viewBox="0 0 420 250" preserveAspectRatio="none" aria-hidden="true">
+                <line x1="28" y1="48" x2="112" y2="92"></line>
+                <line x1="112" y1="92" x2="186" y2="45"></line>
+                <line x1="186" y1="45" x2="274" y2="88"></line>
+                <line x1="274" y1="88" x2="372" y2="50"></line>
+                <line x1="112" y1="92" x2="152" y2="166"></line>
+                <line x1="152" y1="166" x2="242" y2="196"></line>
+                <line x1="242" y1="196" x2="274" y2="88"></line>
+                <line x1="242" y1="196" x2="354" y2="174"></line>
+                <line x1="354" y1="174" x2="372" y2="50"></line>
+                <circle data-network-key="starwars" cx="28" cy="48" r="3"></circle>
+                <circle data-network-key="dragonball" cx="112" cy="92" r="3"></circle>
+                <circle data-network-key="breakingbad" cx="186" cy="45" r="3"></circle>
+                <circle data-network-key="cyberpunk" cx="274" cy="88" r="3"></circle>
+                <circle data-network-key="onepiece" cx="372" cy="50" r="3"></circle>
+                <circle data-network-key="naruto" cx="152" cy="166" r="3"></circle>
+                <circle data-network-key="jjk" cx="242" cy="196" r="3"></circle>
+                <circle data-network-key="witcher" cx="354" cy="174" r="3"></circle>
+                <circle data-network-key="unknown" cx="340" cy="118" r="2"></circle>
+                <text x="18" y="30">ARCHIVE NETWORK</text>
+              </svg>
             <div>
               <div class="mark">The world doesn't wait for you.<em>Neither does the archive.</em></div>
             </div>
@@ -1453,7 +1603,7 @@
           </aside>
         </div>
         <div class="hero-rule">
-          <div class="stat"><b>24</b><span>Featured worlds</span></div>
+          <div class="stat"><b>25</b><span>Featured worlds</span></div>
           <div class="stat"><b>2</b><span>Archive formats</span></div>
           <div class="stat"><b>ONGOING</b><span>World state</span></div>
         </div>
@@ -1500,7 +1650,7 @@
       <div class="shell">
         <div class="section-head">
           <h2>Featured</h2>
-          <p>24 worlds · archive catalogue</p>
+          <p>25 worlds · archive catalogue</p>
         </div>
         <div class="toolbar">
           <input class="search" id="search" type="search" placeholder="Search the archive…" aria-label="Search worlds">
@@ -1537,6 +1687,7 @@
           <a class="card has-cover" style="--accent:#d7a05d" data-name="Hutt Simulator" data-type="games" href="https://janitorai.com/characters/e5980db0-d22e-4141-be64-f7e5e6791d20_character-hutt-simulator" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/HUTTSIMULATOR.png" alt="Hutt Simulator cover"><span class="index">22</span><span class="type">Games</span><h3>Hutt Simulator</h3><p>Underworld business, power, debt and shifting loyalties.</p></a>
           <a class="card has-cover" style="--accent:#b86b78" data-name="Castlevania Living World" data-type="live" href="https://janitorai.com/characters/d9350c76-d62d-4ac9-ba9f-5e85e94e00e2_character-castlevania-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/CASTLEVANIALIVINGWORLD.png" alt="Castlevania Living World cover"><span class="index">23</span><span class="type">Live</span><h3>Castlevania Living World</h3><p>Wallachia, dangerous roads and lives beneath an uneasy night.</p></a>
           <a class="card has-cover" style="--accent:#c1b7a1" data-name="Berserk Living World" data-type="anime" href="https://janitorai.com/characters/24d3d952-baf3-414b-8217-da6bc5aaf8bd_character-berserk-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/BERSERKLIVINGWORLD.png" alt="Berserk Living World cover"><span class="index">24</span><span class="type">Anime</span><h3>Berserk Living World</h3><p>A harsh medieval world where survival and consequence matter.</p></a>
+          <a class="card has-cover" style="--accent:#a66ad6" data-name="Jujutsu Kaisen Living World" data-type="anime" href="https://janitorai.com/characters/89b10859-33ac-4a2b-9583-68d34177dba9_character-jujutsu-kaisen-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/JUJUTSUKAISENLIVINGWORLD.png" alt="Jujutsu Kaisen Living World cover"><span class="index">25</span><span class="type">Anime</span><h3>Jujutsu Kaisen Living World</h3><div class="meta-row"><span>FILE 25</span><span class="state">ACTIVE</span></div><p>Curses, sorcerers and ordinary lives moving beneath unseen danger.</p></a>
         </div>
         <div class="empty" id="empty">No archived world matches your search.</div>
       </div>
@@ -1549,6 +1700,7 @@
           <p>Latest additions</p>
         </div>
         <div class="grid">
+          <a class="card has-cover" style="--accent:#a66ad6" href="https://janitorai.com/characters/89b10859-33ac-4a2b-9583-68d34177dba9_character-jujutsu-kaisen-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/JUJUTSUKAISENLIVINGWORLD.png" alt="Jujutsu Kaisen Living World cover"><span class="index">N09</span><span class="type">New</span><h3>Jujutsu Kaisen Living World</h3><div class="meta-row"><span>FILE 25</span><span class="state">ACTIVE</span></div><p>Curses, sorcerers and ordinary lives moving beneath unseen danger.</p></a>
           <a class="card has-cover" style="--accent:#b7c85a" href="https://janitorai.com/characters/dbc40298-8e1d-4f1b-8f22-2cac6957b7ca_character-breaking-bad-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/BREAKINGBADLIVINGWORLD.png" alt="Breaking Bad Living World cover"><span class="index">N01</span><span class="type">New</span><h3>Breaking Bad Living World</h3><p>Albuquerque, ambition, consequence and lives beyond the main story.</p></a>
           <a class="card has-cover" style="--accent:#e59b3d" href="https://janitorai.com/characters/5672ddd6-1213-4145-bbb2-8c2dc79a8633_character-dragon-ball-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/DRAGONBALLLIVINGWORLD.png" alt="Dragon Ball Living World cover"><span class="index">N02</span><span class="type">New</span><h3>Dragon Ball Living World</h3><p>Early Dragon Ball atmosphere and independent world life.</p></a>
           <a class="card has-cover" style="--accent:#4fa8e0" href="https://janitorai.com/characters/5d55c30b-1151-4991-beca-a91bbe3a85f1_character-blue-lock-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/BLUELOCKLIVINGWORLD.png" alt="Blue Lock Living World cover"><span class="index">N03</span><span class="type">New</span><h3>Blue Lock Living World</h3><p>Football, rivalry, careers and personal consequences.</p></a>
@@ -1637,6 +1789,7 @@
       signal.textContent = signals[signalIndex];
     }, 4200);
 
+
     /* Living archive atmosphere */
     const particleField = document.getElementById("archiveParticles");
     for (let i = 0; i < 28; i++) {
@@ -1652,32 +1805,36 @@
     }
 
     const archiveObjects = document.getElementById("archiveObjects");
+    const archiveAmbient = document.getElementById("archiveAmbient");
+    const archiveFlash = document.getElementById("archiveFlash");
+    const networkNodes = [...document.querySelectorAll(".world-network circle")];
     const objectLibrary = [
-      ["starwars","STAR WARS","01","<span class='saber red'></span><span class='saber green'></span>"],
-      ["onepiece","ONE PIECE","02","<span class='flag'></span>"],
-      ["harry","HARRY POTTER","03","<span class='quill'></span>"],
-      ["breakingbad","BREAKING BAD","04","<span class='crystal'></span>"],
-      ["marvel","MARVEL EARTH 616","05","<span class='arc'></span>"],
-      ["dc","DC EARTH 0","06","<span class='seal'>DC</span>"],
-      ["scp","SCP","07","<span class='scp-label'>SCP</span>"],
-      ["eva","EVANGELION","08","<span class='nerv-mark'></span>"],
-      ["solo","SOLO LEVELING","09","<span class='gate'></span>"],
-      ["aot","ATTACK ON TITAN","10","<span class='blade one'></span><span class='blade two'></span>"],
-      ["opm","ONE PUNCH MAN","11","<span class='impact'></span>"],
-      ["naruto","NARUTO","12","<span class='kunai'></span>"],
-      ["dragonball","DRAGON BALL","13","<span class='dragon-orb'></span>"],
-      ["bluelock","BLUE LOCK","14","<span class='football'></span>"],
-      ["walten","THE WALTEN FILES","15","<span class='cassette'></span>"],
-      ["cyberpunk","CYBERPUNK 2077","16","<span class='cyber-ring'></span><span class='cyber-mark'>2077</span>"],
-      ["witcher","THE WITCHER","17","<span class='medallion'><svg class='wolf-mark' viewBox='0 0 100 100' aria-hidden='true'><path d='M24 31 L36 39 L43 27 L50 35 L57 27 L64 39 L76 31 L70 57 Q63 73 50 79 Q37 73 30 57 Z'></path><path d='M38 50 L45 53 L50 48 L55 53 L62 50 M41 60 Q50 69 59 60 M33 44 L39 43 M61 43 L67 44'></path></svg></span>"],
-      ["jojo","JOJO","18","<span class='stand'></span>"],
-      ["deathnote","DEATH NOTE","19","<span class='book'></span>"],
-      ["watchdogs","WATCH DOGS","20","<span class='scan'></span>"],
-      ["clonewars","CLONE WARS","21","<span class='republic'></span>"],
-      ["hutt","HUTT SIMULATOR","22","<span class='coin'></span>"],
-      ["castlevania","CASTLEVANIA","23","<span class='bat'></span>"],
-      ["berserk","BERSERK","24","<span class='greatsword'></span>"],
-      ["jjk","JUJUTSU KAISEN","25","<span class='seal'></span>"]
+      ["starwars","STAR WARS","01","#78e895","common","<span class='saber red'></span><span class='saber green'></span>"],
+      ["onepiece","ONE PIECE","02","#d7dde3","common","<span class='flag'></span>"],
+      ["harry","HARRY POTTER","03","#d3b36d","common","<span class='quill'></span>"],
+      ["breakingbad","BREAKING BAD","04","#b7c85a","common","<span class='crystal'></span>"],
+      ["marvel","MARVEL EARTH 616","05","#e2a868","common","<span class='arc'></span>"],
+      ["dc","DC EARTH 0","06","#79c9ff","common","<span class='seal'>DC</span>"],
+      ["scp","SCP","07","#ff676d","rare","<span class='scp-label'>SCP</span>"],
+      ["eva","EVANGELION","08","#b078f1","rare","<span class='nerv-mark'></span>"],
+      ["solo","SOLO LEVELING","09","#92a8ff","common","<span class='gate'></span>"],
+      ["aot","ATTACK ON TITAN","10","#d6dde4","common","<span class='blade one'></span><span class='blade two'></span>"],
+      ["opm","ONE PUNCH MAN","11","#ef9651","common","<span class='impact'></span>"],
+      ["naruto","NARUTO","12","#e9a260","common","<span class='kunai'></span>"],
+      ["dragonball","DRAGON BALL","13","#eea23e","common","<span class='dragon-orb'></span>"],
+      ["bluelock","BLUE LOCK","14","#67c9ff","common","<span class='football'></span>"],
+      ["walten","THE WALTEN FILES","15","#9dbfa8","rare","<span class='cassette'></span>"],
+      ["cyberpunk","CYBERPUNK 2077","16","#f4df42","common","<span class='cyber-ring'></span><span class='cyber-mark'>2077</span>"],
+      ["witcher","THE WITCHER","17","#c4cbd3","common","<span class='medallion'><svg class='wolf-mark' viewBox='0 0 100 100' aria-hidden='true'><path d='M24 31 L36 39 L43 27 L50 35 L57 27 L64 39 L76 31 L70 57 Q63 73 50 79 Q37 73 30 57 Z'></path><path d='M38 50 L45 53 L50 48 L55 53 L62 50 M41 60 Q50 69 59 60 M33 44 L39 43 M61 43 L67 44'></path></svg></span>"],
+      ["jojo","JOJO","18","#d082ef","common","<span class='stand'></span>"],
+      ["deathnote","DEATH NOTE","19","#cfd4da","rare","<span class='book'></span>"],
+      ["watchdogs","WATCH DOGS","20","#82bcdf","common","<span class='scan'></span>"],
+      ["clonewars","CLONE WARS","21","#d5bd7d","common","<span class='republic'></span>"],
+      ["hutt","HUTT SIMULATOR","22","#d0a34d","rare","<span class='coin'></span>"],
+      ["castlevania","CASTLEVANIA","23","#b9869a","rare","<span class='bat'></span>"],
+      ["berserk","BERSERK","24","#adb4bd","rare","<span class='greatsword'></span>"],
+      ["jjk","JUJUTSU KAISEN","25","#b57ae8","rare","<span class='seal'></span>"],
+      ["unknown","UNKNOWN","??","#b6c0ca","rare","<span class='unknown-core'><i></i><i></i><i></i></span>"]
     ];
 
     const objectPositions = [
@@ -1688,14 +1845,82 @@
       { sx:"105vw", sy:"80vh", ex:"10vw", ey:"12vh", sr:"-13deg", er:"6deg" },
       { sx:"20vw", sy:"-18vh", ex:"93vw", ey:"70vh", sr:"6deg", er:"-9deg" }
     ];
+
+    const worldColors = {
+      starwars:"rgba(105, 143, 218, .12)",
+      cyberpunk:"rgba(244, 223, 66, .11)",
+      breakingbad:"rgba(183, 200, 90, .12)",
+      castlevania:"rgba(151, 95, 117, .11)",
+      jjk:"rgba(170, 106, 226, .11)",
+      witcher:"rgba(188, 198, 207, .10)",
+      dragonball:"rgba(230, 150, 49, .10)"
+    };
+
     let lastObjectIndex = -1;
     let objectTimer = null;
+    let focusedWorld = null;
+    let sessionSeconds = 0;
+    const rareKeys = new Set(["scp","eva","walten","deathnote","hutt","castlevania","berserk","jjk"]);
+    const commonBoost = new Set(["starwars","cyberpunk","dragonball","naruto","breakingbad"]);
 
     function chooseObject() {
-      let index = Math.floor(Math.random() * objectLibrary.length);
-      if (objectLibrary.length > 1 && index === lastObjectIndex) index = (index + 1) % objectLibrary.length;
+      if (focusedWorld) {
+        const focused = objectLibrary.findIndex(function(item) { return item[0] === focusedWorld; });
+        if (focused >= 0 && Math.random() < 0.68) {
+          lastObjectIndex = focused;
+          return objectLibrary[focused];
+        }
+      }
+
+      const pool = [];
+      objectLibrary.forEach(function(item, index) {
+        if (item[0] === "unknown") {
+          pool.push(index, index);
+        } else if (rareKeys.has(item[0])) {
+          pool.push(index);
+        } else if (commonBoost.has(item[0])) {
+          pool.push(index,index,index,index);
+        } else {
+          pool.push(index,index,index);
+        }
+      });
+
+      if (sessionSeconds > 50 && Math.random() < 0.13) {
+        const unknownIndex = objectLibrary.findIndex(function(item) { return item[0] === "unknown"; });
+        if (unknownIndex >= 0) pool.push(unknownIndex,unknownIndex,unknownIndex,unknownIndex);
+      }
+
+      let index = pool[Math.floor(Math.random() * pool.length)];
+      if (objectLibrary.length > 1 && index === lastObjectIndex) {
+        index = (index + 1 + Math.floor(Math.random() * (objectLibrary.length - 1))) % objectLibrary.length;
+      }
       lastObjectIndex = index;
       return objectLibrary[index];
+    }
+
+    function activateNetwork(kind, color) {
+      networkNodes.forEach(function(node) {
+        node.classList.toggle("network-active", node.dataset.networkKey === kind);
+      });
+      document.documentElement.style.setProperty("--network-color", color || "#cbd3dc");
+    }
+
+    function flashAt(x,y,color) {
+      if (!archiveFlash) return;
+      archiveFlash.style.setProperty("--flash-x", x.toFixed(1) + "%");
+      archiveFlash.style.setProperty("--flash-y", y.toFixed(1) + "%");
+      archiveFlash.style.setProperty("--flash-color", color || "rgba(220,226,233,.10)");
+      archiveFlash.classList.remove("fire");
+      void archiveFlash.offsetWidth;
+      archiveFlash.classList.add("fire");
+    }
+
+    function setAmbient(kind, color) {
+      const ambient = worldColors[kind] || "rgba(180,188,198,.07)";
+      if (archiveAmbient) {
+        archiveAmbient.style.setProperty("--ambient-color", ambient);
+      }
+      activateNetwork(kind, color);
     }
 
     function spawnArchiveObject() {
@@ -1703,8 +1928,11 @@
       const kind = picked[0];
       const name = picked[1];
       const number = picked[2];
-      const art = picked[3];
+      const color = picked[3];
+      const rarity = picked[4];
+      const art = picked[5];
       const path = objectPositions[Math.floor(Math.random() * objectPositions.length)];
+
       const el = document.createElement("div");
       el.className = "archive-object obj-" + kind;
       el.style.setProperty("--sx", path.sx);
@@ -1713,20 +1941,29 @@
       el.style.setProperty("--ey", path.ey);
       el.style.setProperty("--sr", path.sr);
       el.style.setProperty("--er", path.er);
-      el.style.setProperty("--object-duration", (8 + Math.random() * 4).toFixed(2) + "s");
-      el.style.setProperty("--object-opacity", (0.46 + Math.random() * 0.26).toFixed(2));
+      el.style.setProperty("--object-duration", (9 + Math.random() * 5).toFixed(2) + "s");
+      el.style.setProperty("--object-opacity", (rarity === "rare" ? (0.50 + Math.random() * 0.24) : (0.42 + Math.random() * 0.28)).toFixed(2));
       el.innerHTML =
         "<div class='object-inner'>" + art + "</div>" +
         "<div class='object-label'>ARCHIVE OBJECT // " + name +
-        "<span class='minor'>INDEX " + number + "</span></div>";
+        "<span class='minor'>" + (rarity === "rare" ? "UNUSUAL" : "INDEX " + number) + "</span></div>";
       archiveObjects.appendChild(el);
 
-      const removeAfter = parseFloat(getComputedStyle(el).animationDuration) * 1000 + 250;
-      setTimeout(function() { el.remove(); }, removeAfter);
+      setAmbient(kind, color);
+      flashAt(18 + Math.random() * 64, 20 + Math.random() * 60, color);
+
+      el.addEventListener("animationend", function() {
+        setAmbient("neutral","#cbd3dc");
+        el.remove();
+      }, { once:true });
+
+      const removeAfter = 15.5 * 1000;
+      setTimeout(function() { if (el.isConnected) el.remove(); }, removeAfter);
+
       objectTimer = setTimeout(function() {
         objectTimer = null;
         spawnArchiveObject();
-      }, 4700 + Math.random() * 6200);
+      }, 5200 + Math.random() * 7000);
     }
 
     function stopArchiveObjects() {
@@ -1741,7 +1978,7 @@
         objectTimer = setTimeout(function() {
           objectTimer = null;
           spawnArchiveObject();
-        }, 2800);
+        }, 2800 + Math.random() * 1800);
       }
     }
 
@@ -1751,39 +1988,56 @@
     });
     startArchiveObjects();
 
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      let pointerX = 0;
-      let pointerY = 0;
+    setInterval(function() {
+      sessionSeconds += 1;
+    }, 1000);
 
-      document.addEventListener("pointermove", function(event) {
-        pointerX = event.clientX / window.innerWidth - 0.5;
-        pointerY = event.clientY / window.innerHeight - 0.5;
+    document.querySelectorAll(".card.has-cover").forEach(function(card) {
+      card.addEventListener("pointerenter", function() {
+        focusedWorld = (card.dataset.name || "").toLowerCase();
+        focusedWorld = focusedWorld
+          .replace(" living world","")
+          .replace(" simulator","")
+          .replace(" entire universe","");
+        if (focusedWorld.includes("star wars")) focusedWorld = "starwars";
+        else if (focusedWorld.includes("breaking bad")) focusedWorld = "breakingbad";
+        else if (focusedWorld.includes("cyberpunk")) focusedWorld = "cyberpunk";
+        else if (focusedWorld.includes("dragon ball")) focusedWorld = "dragonball";
+        else if (focusedWorld.includes("blue lock")) focusedWorld = "bluelock";
+        else if (focusedWorld.includes("one piece")) focusedWorld = "onepiece";
+        else if (focusedWorld.includes("one punch man")) focusedWorld = "opm";
+        else if (focusedWorld.includes("death note")) focusedWorld = "deathnote";
+        else if (focusedWorld.includes("attack on titan")) focusedWorld = "aot";
+        else if (focusedWorld.includes("jujutsu kaisen")) focusedWorld = "jjk";
+        else if (focusedWorld.includes("the witcher")) focusedWorld = "witcher";
+        else if (focusedWorld.includes("castlevania")) focusedWorld = "castlevania";
+        else if (focusedWorld.includes("berserk")) focusedWorld = "berserk";
+        else if (focusedWorld.includes("watch dogs")) focusedWorld = "watchdogs";
+        else if (focusedWorld.includes("naruto")) focusedWorld = "naruto";
+        else if (focusedWorld.includes("solo leveling")) focusedWorld = "solo";
+        else if (focusedWorld.includes("evangelion")) focusedWorld = "eva";
+        else if (focusedWorld.includes("walt")) focusedWorld = "walten";
+        else if (focusedWorld.includes("scp")) focusedWorld = "scp";
+        else if (focusedWorld.includes("hutt")) focusedWorld = "hutt";
+        else if (focusedWorld.includes("jojo")) focusedWorld = "jojo";
+        else if (focusedWorld.includes("marvel")) focusedWorld = "marvel";
+        else if (focusedWorld.includes("dc")) focusedWorld = "dc";
+        else focusedWorld = null;
 
-        document.querySelectorAll(".object-inner").forEach(function(inner) {
-          inner.style.transform =
-            "translate(-50%,-50%) translate3d(" +
-            (pointerX * -18).toFixed(2) + "px," +
-            (pointerY * -13).toFixed(2) + "px,0)";
-        });
-      }, { passive:true });
+        card.classList.add("world-focused");
+        const activeItem = objectLibrary.find(function(item) { return item[0] === focusedWorld; });
+        if (activeItem) setAmbient(activeItem[0], activeItem[3]);
+      });
 
-      document.addEventListener("pointerleave", function() {
-        document.querySelectorAll(".object-inner").forEach(function(inner) {
+      card.addEventListener("pointerleave", function() {
+        card.classList.remove("world-focused");
+        focusedWorld = null;
+        setAmbient("neutral","#cbd3dc");
+        document.querySelectorAll(".archive-object .object-inner").forEach(function(inner) {
           inner.style.transform = "translate(-50%,-50%) translate3d(0,0,0)";
         });
       });
 
-      window.setInterval(function() {
-        document.querySelectorAll(".archive-object .object-inner").forEach(function(inner) {
-          inner.style.filter =
-            "drop-shadow(" +
-            (pointerX * 4).toFixed(2) + "px " +
-            (pointerY * 4).toFixed(2) + "px 18px rgba(0,0,0,.22))";
-        });
-      }, 80);
-    }
-
-    document.querySelectorAll(".card.has-cover").forEach(function(card) {
       card.addEventListener("pointermove", function(event) {
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
         const r = card.getBoundingClientRect();
@@ -1794,10 +2048,68 @@
           (-py * 2.2).toFixed(2) + "deg) rotateY(" +
           (px * 2.2).toFixed(2) + "deg)";
       });
+
       card.addEventListener("pointerleave", function() {
         card.style.transform = "";
       });
     });
+
+    document.addEventListener("pointermove", function(event) {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const x = event.clientX / window.innerWidth - 0.5;
+      const y = event.clientY / window.innerHeight - 0.5;
+
+      document.querySelectorAll(".object-inner").forEach(function(inner) {
+        inner.style.transform =
+          "translate(-50%,-50%) translate3d(" +
+          (x * -18).toFixed(2) + "px," +
+          (y * -13).toFixed(2) + "px,0)";
+      });
+
+      document.documentElement.style.setProperty("--ambient-x", (x * -24).toFixed(2) + "px");
+      document.documentElement.style.setProperty("--ambient-y", (y * -20).toFixed(2) + "px");
+    }, { passive:true });
+
+    window.addEventListener("scroll", function() {
+      const y = window.scrollY;
+      const sections = [
+        { id:"featured", color:"rgba(130,150,180,.06)" },
+        { id:"new", color:"rgba(160,170,185,.055)" },
+        { id:"seasons", color:"rgba(170,140,90,.06)" }
+      ];
+      let best = sections[0];
+      sections.forEach(function(section) {
+        const node = document.getElementById(section.id);
+        if (node && node.offsetTop <= y + window.innerHeight * 0.40) best = section;
+      });
+      if (archiveAmbient && !focusedWorld) archiveAmbient.style.setProperty("--ambient-color", best.color);
+    }, { passive:true });
+
+    let signalIndex = 0;
+    const signal = document.getElementById("signal");
+    const signalPool = [
+      ["01","STAR WARS","ACTIVE","GALACTIC SPACE"],
+      ["04","BREAKING BAD","ACTIVE","ALBUQUERQUE, NM"],
+      ["16","CYBERPUNK 2077","ACTIVE","NIGHT CITY"],
+      ["17","THE WITCHER","ACTIVE","THE CONTINENT"],
+      ["25","JUJUTSU KAISEN","ACTIVE","TOKYO"],
+      ["13","DRAGON BALL","ACTIVE","EARTH"],
+      ["19","DEATH NOTE","UNRESOLVED","TOKYO"],
+      ["07","SCP","RESTRICTED","SITE NETWORK"]
+    ];
+    function updateSignal() {
+      if (!signal) return;
+      const entry = signalPool[signalIndex % signalPool.length];
+      signal.textContent =
+        "ARCHIVE SIGNAL // " + entry[0] +
+        " · WORLD DETECTED: " + entry[1] +
+        " · STATE: " + entry[2] +
+        " · " + entry[3];
+      signalIndex += 1;
+    }
+    updateSignal();
+    setInterval(updateSignal, 5200);
+
 
   </script>
 </body>
