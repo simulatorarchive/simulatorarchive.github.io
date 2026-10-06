@@ -1914,30 +1914,418 @@
     .season-record .season-state { grid-column:2; text-align:left; }
   }
 
-  </style>
+    /* Classified archive visual pass */
+  .archive-modal {
+    background:
+      radial-gradient(circle at 50% 42%,rgba(89,103,121,.09),transparent 34%),
+      rgba(1,2,4,.80);
+    backdrop-filter:blur(16px) saturate(.88);
+  }
+  .archive-modal-panel {
+    width:min(720px,100%);
+    min-height:560px;
+    padding:38px 42px 30px 46px;
+    border:1px solid rgba(196,204,214,.21);
+    background:
+      linear-gradient(90deg,rgba(255,255,255,.018),transparent 10%),
+      repeating-linear-gradient(0deg,rgba(255,255,255,.010) 0 1px,transparent 1px 8px),
+      linear-gradient(145deg,#0b0e12,#05070a 72%);
+    box-shadow:
+      0 34px 110px rgba(0,0,0,.68),
+      inset 0 1px 0 rgba(255,255,255,.04),
+      inset 6px 0 0 color-mix(in srgb,var(--classification-color,#9da7b1) 18%,transparent);
+    overflow:hidden;
+    --classification-color:#927fa5;
+    --classification-tint:rgba(146,127,165,.045);
+  }
+  .archive-modal-panel::before {
+    content:"";
+    position:absolute;
+    inset:15px;
+    border:1px solid rgba(190,198,208,.055);
+    pointer-events:none;
+  }
+  .archive-modal-panel::after {
+    content:"OBSERVATION FILE";
+    position:absolute;
+    right:-35px;
+    top:50%;
+    transform:rotate(90deg) translateY(-50%);
+    color:rgba(205,213,222,.045);
+    font:800 8px ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.27em;
+    text-transform:uppercase;
+    pointer-events:none;
+  }
+  .modal-rail-label {
+    position:absolute;
+    left:13px;
+    top:50%;
+    transform:rotate(-90deg) translate(-50%,-50%);
+    transform-origin:left top;
+    color:rgba(190,198,208,.23);
+    font:800 6px ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.20em;
+    text-transform:uppercase;
+    white-space:nowrap;
+    pointer-events:none;
+  }
+  .modal-classification {
+    position:relative;
+    z-index:2;
+    margin-bottom:19px;
+    color:#59636f;
+    font:800 7px ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+  }
+  .modal-serial {
+    position:absolute;
+    z-index:1;
+    right:62px;
+    top:58px;
+    color:rgba(219,225,231,.065);
+    font:700 clamp(56px,8vw,96px)/.82 Georgia,serif;
+    letter-spacing:-.055em;
+    pointer-events:none;
+    user-select:none;
+  }
+  .modal-access-stamp {
+    position:absolute;
+    z-index:2;
+    right:40px;
+    bottom:30px;
+    transform:rotate(-5deg);
+    padding:7px 10px;
+    border:1px solid color-mix(in srgb,var(--classification-color) 38%,transparent);
+    color:color-mix(in srgb,var(--classification-color) 72%,#c5cbd0);
+    background:var(--classification-tint);
+    font:900 7px ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.20em;
+    text-transform:uppercase;
+    pointer-events:none;
+  }
+  .modal-kicker {
+    position:relative;
+    z-index:2;
+    color:#727d88;
+    font:800 8px ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.22em;
+  }
+  .modal-title {
+    position:relative;
+    z-index:2;
+    max-width:78%;
+    margin:10px 0 10px;
+    color:#edf0f3;
+    font:600 clamp(35px,5vw,54px)/.95 Georgia,serif;
+    letter-spacing:-.038em;
+    text-wrap:balance;
+  }
+  .modal-copy {
+    position:relative;
+    z-index:2;
+    max-width:78%;
+    color:#737d88;
+    font-size:10px;
+    line-height:1.85;
+  }
+  .modal-grid {
+    position:relative;
+    z-index:2;
+    grid-template-columns:repeat(4,1fr);
+    margin-top:27px;
+    border:1px solid rgba(190,198,208,.10);
+    background:var(--classification-tint);
+  }
+  .modal-cell {
+    min-height:69px;
+    padding:13px 14px;
+    border-right:1px solid rgba(190,198,208,.07);
+    border-bottom:1px solid rgba(190,198,208,.07);
+  }
+  .modal-cell:nth-child(2n) { padding-left:14px; border-right:1px solid rgba(190,198,208,.07); }
+  .modal-cell:nth-child(4n) { border-right:0; }
+  .modal-cell:nth-last-child(-n+4) { border-bottom:0; }
+  .modal-cell span {
+    color:#4f5964;
+    font:800 6.5px ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+  }
+  .modal-cell b {
+    margin-top:8px;
+    color:#c8cfd6;
+    font:800 9px/1.35 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.07em;
+  }
+  .related-files {
+    position:relative;
+    z-index:2;
+    margin-top:18px;
+    padding-top:12px;
+    border-top:1px solid rgba(190,198,208,.08);
+  }
+  .related-head {
+    display:flex;
+    justify-content:space-between;
+    gap:14px;
+    color:#4d5863;
+    font:800 6.5px ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+  }
+  .related-list {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:9px;
+  }
+  .related-empty {
+    padding:9px 0 1px;
+    color:#4d5863;
+    font:700 6.5px ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
+  .related-file {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    min-height:40px;
+    padding:9px 10px;
+    border:1px solid rgba(190,198,208,.08);
+    background:rgba(255,255,255,.012);
+    color:#69737e;
+    cursor:pointer;
+    text-align:left;
+    transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease;
+  }
+  .related-file:hover {
+    background:rgba(255,255,255,.025);
+    border-color:rgba(210,218,226,.17);
+    color:#d2d7dc;
+    transform:translateY(-1px);
+  }
+  .related-file .related-main { display:block; min-width:0; }
+  .related-file .related-id {
+    display:block;
+    color:#4d5863;
+    font:800 6.5px monospace;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+  }
+  .related-file strong {
+    display:block;
+    margin-top:4px;
+    color:#aeb6be;
+    font-size:7px;
+    letter-spacing:.05em;
+    line-height:1.35;
+    text-transform:uppercase;
+  }
+  .related-file .related-state {
+    flex:0 0 auto;
+    padding:4px 5px;
+    border:1px solid rgba(190,198,208,.08);
+    color:#5c6670;
+    font:800 6px monospace;
+    letter-spacing:.08em;
+  }
+  .modal-footer-line {
+    position:relative;
+    z-index:2;
+    display:flex;
+    justify-content:space-between;
+    gap:14px;
+    margin-top:15px;
+    padding-top:11px;
+    border-top:1px solid rgba(190,198,208,.08);
+  }
+  .modal-open-world {
+    position:relative;
+    z-index:3;
+    margin-top:18px;
+    padding:13px 16px;
+    border-color:color-mix(in srgb,var(--classification-color) 34%,rgba(190,198,208,.18));
+    background:var(--classification-tint);
+  }
+  .modal-open-world::before {
+    content:"";
+    display:inline-block;
+    width:6px;
+    height:6px;
+    margin-right:9px;
+    border-radius:50%;
+    background:var(--classification-color);
+    box-shadow:0 0 10px color-mix(in srgb,var(--classification-color) 28%,transparent);
+    vertical-align:1px;
+  }
+  .archive-modal-panel.classification-active { --classification-color:#aab2bb; --classification-tint:rgba(170,178,187,.045); }
+  .archive-modal-panel.classification-stable { --classification-color:#b9c0c7; --classification-tint:rgba(185,192,199,.038); }
+  .archive-modal-panel.classification-anomalous { --classification-color:#b69a69; --classification-tint:rgba(182,154,105,.045); }
+  .archive-modal-panel.classification-restricted { --classification-color:#9b5e66; --classification-tint:rgba(155,94,102,.05); }
+  .archive-modal-panel.classification-unknown { --classification-color:#927fa5; --classification-tint:rgba(146,127,165,.045); }
+
+  .timeline-ledger-head {
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    padding:10px 12px;
+    border:1px solid rgba(190,198,208,.10);
+    border-bottom:0;
+    background:rgba(255,255,255,.012);
+    color:#4f5964;
+    font:800 6.5px ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+  }
+  .timeline-register {
+    background:linear-gradient(180deg,rgba(255,255,255,.018),transparent 26%),#06080b;
+  }
+  .timeline-register::before { display:none; }
+  .timeline-file {
+    min-height:112px;
+    padding:14px 14px 16px 16px;
+    background:transparent;
+    overflow:hidden;
+  }
+  .timeline-file::before {
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    bottom:0;
+    width:2px;
+    background:rgba(190,198,208,.08);
+    transition:background .18s ease,box-shadow .18s ease;
+  }
+  .timeline-file[data-status="ACTIVE"]::before { background:rgba(170,178,187,.56); }
+  .timeline-file[data-status="STABLE"]::before { background:rgba(185,192,199,.44); }
+  .timeline-file[data-status="ANOMALOUS"]::before { background:rgba(182,154,105,.60); }
+  .timeline-file[data-status="RESTRICTED"]::before { background:rgba(155,94,102,.58); }
+  .timeline-file:hover::before { box-shadow:0 0 14px rgba(174,183,192,.18); }
+  .timeline-file:hover { background:linear-gradient(135deg,rgba(255,255,255,.026),rgba(255,255,255,.008)); }
+  .timeline-file .timeline-id {
+    padding-bottom:11px;
+    border-bottom:1px solid rgba(190,198,208,.07);
+  }
+  .timeline-file .timeline-id > span:first-child { color:#7c8792; }
+  .timeline-file strong { margin-top:13px; min-height:24px; color:#c8cfd6; font-size:8px; }
+
+  .terminal-panel {
+    position:relative;
+    overflow:hidden;
+    background:
+      repeating-linear-gradient(0deg,rgba(255,255,255,.010) 0 1px,transparent 1px 5px),
+      linear-gradient(145deg,#06080a,#090c10);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+  }
+  .terminal-panel::after {
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,transparent,rgba(255,255,255,.010),transparent);
+    transform:translateY(-100%);
+    animation:terminalSweep 9s linear infinite;
+    pointer-events:none;
+  }
+  @keyframes terminalSweep {
+    0%,72% { transform:translateY(-100%); }
+    100% { transform:translateY(100%); }
+  }
+  .terminal-topline {
+    position:relative;
+    z-index:1;
+    display:flex;
+    justify-content:space-between;
+    gap:14px;
+    margin:-4px -4px 18px;
+    padding:0 0 12px;
+    border-bottom:1px solid rgba(190,198,208,.08);
+    color:#4d5863;
+    font:800 6.5px ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+  }
+  .terminal-led { color:#8b959f; }
+  .terminal-led::before {
+    content:"";
+    display:inline-block;
+    width:5px;
+    height:5px;
+    margin-right:6px;
+    border-radius:50%;
+    background:#8e99a3;
+    box-shadow:0 0 9px rgba(142,153,163,.28);
+    vertical-align:1px;
+    animation:terminalLed 1.8s ease-in-out infinite;
+  }
+  @keyframes terminalLed { 50% { opacity:.35; } }
+
+  .card[data-status="ANOMALOUS"]::before { background:#b69a69; opacity:.70; }
+  .card[data-status="RESTRICTED"]::before { background:#9b5e66; opacity:.72; }
+  .card[data-status="ACTIVE"]::before { background:#aab2bb; opacity:.78; }
+  .card[data-status="STABLE"]::before { background:#b9c0c7; opacity:.68; }
+
+  @media (max-width:900px) {
+    .modal-grid { grid-template-columns:repeat(2,1fr); }
+    .modal-cell:nth-child(2n) { border-right:0; }
+    .modal-cell:nth-last-child(-n+4) { border-bottom:1px solid rgba(190,198,208,.07); }
+    .modal-cell:nth-last-child(-n+2) { border-bottom:0; }
+    .related-list { grid-template-columns:1fr; }
+    .modal-title,.modal-copy { max-width:88%; }
+  }
+  @media (max-width:640px) {
+    .archive-modal { padding:11px; }
+    .archive-modal-panel { padding:30px 20px 24px 25px; min-height:auto; }
+    .modal-rail-label { display:none; }
+    .modal-serial { top:56px; right:22px; font-size:49px; }
+    .modal-access-stamp { right:19px; bottom:21px; }
+    .modal-title { max-width:100%; font-size:34px; }
+    .modal-copy { max-width:100%; }
+    .modal-grid { grid-template-columns:1fr 1fr; }
+    .related-list { grid-template-columns:1fr; }
+    .related-head { flex-direction:column; gap:5px; }
+    .timeline-ledger-head { flex-direction:column; gap:5px; }
+    .modal-footer-line { flex-direction:column; gap:5px; }
+  }
+
+</style>
 </head>
 <body>
   <main class="app">
     <div class="archive-runtime" id="archiveRuntime" aria-live="polite"><div class="runtime-toast" id="runtimeToast"><div class="runtime-title" id="runtimeTitle"></div><div class="runtime-sub" id="runtimeSub"></div></div></div>
     <div class="detected-file" id="detectedFile"><button type="button" id="detectedFileButton"><span class="detected-head"><span>FILE DETECTED</span><span class="detected-status">UNRESOLVED</span></span><span class="detected-copy">UNKNOWN ENTRY · ARCHIVE STATUS: INCOMPLETE</span></button></div>
-    <div class="archive-modal" id="archiveModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="archive-modal-panel">
-      <button class="modal-close" id="modalClose" type="button" aria-label="Close">×</button>
-      <div class="modal-kicker" id="modalKicker">UNINDEXED ARCHIVE FILE</div>
-      <h2 class="modal-title" id="modalTitle">Unknown Entry</h2>
-      <p class="modal-copy" id="modalCopy">The archive detected a file with no stable world index. The record remains incomplete.</p>
-      <div class="modal-grid">
-        <div class="modal-cell"><span>File</span><b id="modalFile">??</b></div>
-        <div class="modal-cell"><span>Format</span><b id="modalFormat">UNKNOWN</b></div>
-        <div class="modal-cell"><span>Status</span><b id="modalStatus">UNRESOLVED</b></div>
-        <div class="modal-cell"><span>Activity</span><b id="modalActivity">UNKNOWN</b></div>
-        <div class="modal-cell"><span>Region</span><b id="modalRegion">UNKNOWN</b></div>
-        <div class="modal-cell"><span>Continuation</span><b id="modalContinuation">OBSERVING</b></div>
-        <div class="modal-cell"><span>World model</span><b id="modalModel">INDEPENDENT</b></div>
-        <div class="modal-cell"><span>Integrity</span><b id="modalIntegrity">VALID</b></div>
+    <div class="archive-modal" id="archiveModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="archive-modal-panel classification-unknown">
+        <div class="modal-rail-label">OBSERVATION FILE · ARCHIVE RECORD</div>
+        <div class="modal-classification">SIMULATORARCHIVE · CLASSIFIED RECORD</div>
+        <div class="modal-serial" id="modalSerial">FILE ??</div>
+        <div class="modal-access-stamp" id="modalAccessStamp">UNVERIFIED</div>
+        <button class="modal-close" id="modalClose" type="button" aria-label="Close">×</button>
+        <div class="modal-kicker" id="modalKicker">UNINDEXED ARCHIVE FILE</div>
+        <h2 class="modal-title" id="modalTitle">Unknown Entry</h2>
+        <p class="modal-copy" id="modalCopy">The archive detected a file with no stable world index. The record remains incomplete.</p>
+        <div class="modal-grid">
+          <div class="modal-cell"><span>File</span><b id="modalFile">??</b></div>
+          <div class="modal-cell"><span>Format</span><b id="modalFormat">UNKNOWN</b></div>
+          <div class="modal-cell"><span>Status</span><b id="modalStatus">UNRESOLVED</b></div>
+          <div class="modal-cell"><span>Activity</span><b id="modalActivity">UNKNOWN</b></div>
+          <div class="modal-cell"><span>Region</span><b id="modalRegion">UNKNOWN</b></div>
+          <div class="modal-cell"><span>Continuation</span><b id="modalContinuation">OBSERVING</b></div>
+          <div class="modal-cell"><span>World model</span><b id="modalModel">INDEPENDENT</b></div>
+          <div class="modal-cell"><span>Integrity</span><b id="modalIntegrity">UNRESOLVED</b></div>
+        </div>
+        <div class="related-files">
+          <div class="related-head"><span>RELATED FILES</span><span>ARCHIVE RELATION</span></div>
+          <div class="related-list" id="relatedList"></div>
+        </div>
+        <div class="modal-footer-line"><span id="modalFooterLeft">ARCHIVE RECORD · ??</span><span id="modalFooterRight">OBSERVATION CONTINUES</span></div>
+        <a class="modal-open-world hidden" id="modalOpenWorld" href="#" target="_blank" rel="noopener noreferrer">OPEN WORLD ↗</a>
       </div>
-      <div class="modal-footer-line"><span id="modalFooterLeft">ARCHIVE RECORD · ??</span><span id="modalFooterRight">OBSERVATION CONTINUES</span></div>
-      <a class="modal-open-world hidden" id="modalOpenWorld" href="#" target="_blank" rel="noopener noreferrer">OPEN WORLD ↗</a>
-    </div></div>
+    </div>
 
     <div class="archive-atmosphere" aria-hidden="true">
       <div class="archive-noise"></div>
@@ -2068,7 +2456,8 @@
           <p>Current session · observation continues</p>
         </div>
         <div class="activity-layout">
-          <div class="activity-panel">
+          <div class="activity-panel terminal-panel">
+            <div class="terminal-topline"><span>ARCHIVE TERMINAL // SESSION LOG</span><span class="terminal-led">LIVE</span></div>
             <div class="section-head" style="margin:0;padding-bottom:12px;">
               <h2>Session Entries</h2>
               <p id="activityClock">LOCAL SESSION</p>
@@ -2143,6 +2532,7 @@
           <h2>Archive Timeline</h2>
           <p>Indexed files · chronological register</p>
         </div>
+        <div class="timeline-ledger-head"><span>MASTER INDEX</span><span id="timelineCount">25 FILES · CONTINUOUS OBSERVATION</span></div>
         <div class="timeline-register" id="timelineRegister"></div>
       </div>
     </section>
@@ -2474,12 +2864,36 @@
     const modalActivity = document.getElementById("modalActivity");
     const modalRegion = document.getElementById("modalRegion");
     const modalContinuation = document.getElementById("modalContinuation");
+    const modalSerial = document.getElementById("modalSerial");
+    const modalAccessStamp = document.getElementById("modalAccessStamp");
+    const relatedList = document.getElementById("relatedList");
+    const archiveModalPanel = document.querySelector(".archive-modal-panel");
+    const timelineCount = document.getElementById("timelineCount");
     const modalModel = document.getElementById("modalModel");
     const modalIntegrity = document.getElementById("modalIntegrity");
     const modalFooterLeft = document.getElementById("modalFooterLeft");
     const modalFooterRight = document.getElementById("modalFooterRight");
     const modalOpenWorld = document.getElementById("modalOpenWorld");
 
+    const relatedMap = {
+      "starwars":[["021","CLONE WARS ANY LIFE SIMULATOR"]],
+      "clonewars":[["001","STAR WARS SIMULATOR"]],
+      "marvel":[["006","DC EARTH 0 LIVING WORLD"]],
+      "dc":[["005","MARVEL EARTH 616 LIVING WORLD"]],
+      "cyberpunk":[["020","WATCH DOGS LIVING WORLD"]],
+      "watchdogs":[["016","CYBERPUNK 2077 LIVING WORLD"]],
+      "witcher":[["023","CASTLEVANIA LIVING WORLD"]],
+      "castlevania":[["024","BERSERK LIVING WORLD"]],
+      "berserk":[["023","CASTLEVANIA LIVING WORLD"]],
+      "dragonball":[["012","NARUTO LIVING WORLD"]],
+      "naruto":[["013","DRAGON BALL LIVING WORLD"]],
+      "deathnote":[["007","SCP SIMULATOR"]],
+      "scp":[["019","DEATH NOTE LIVING WORLD"]],
+      "eva":[["015","THE WALTEN FILES LIVING WORLD"]],
+      "walten":[["008","NEON GENESIS EVANGELION LIVING WORLD"]],
+      "solo":[["025","JUJUTSU KAISEN LIVING WORLD"]],
+      "jjk":[["009","SOLO LEVELING LIVING WORLD"]]
+    };
     const regionMap = {
       "starwars":"GALACTIC SPACE","onepiece":"GRAND LINE","harry":"UNITED KINGDOM","breakingbad":"ALBUQUERQUE, NM",
       "marvel":"EARTH-616","dc":"EARTH-0","scp":"SITE NETWORK","eva":"TOKYO-3, JAPAN","solo":"SOUTH KOREA",
@@ -2504,6 +2918,9 @@
       return type ? type.toUpperCase() : "ARCHIVE";
     }
     function setModalUnknown() {
+      archiveModalPanel.className="archive-modal-panel classification-unknown";
+      modalSerial.textContent="FILE ??";
+      modalAccessStamp.textContent="UNVERIFIED";
       modalKicker.textContent="UNINDEXED ARCHIVE FILE";
       modalTitle.textContent="Unknown Entry";
       modalCopy.textContent="The archive detected a file with no stable world index. The record remains incomplete.";
@@ -2517,6 +2934,7 @@
       modalIntegrity.textContent="UNRESOLVED";
       modalFooterLeft.textContent="ARCHIVE RECORD · ??";
       modalFooterRight.textContent="OBSERVATION CONTINUES";
+      relatedList.innerHTML="<div class='related-empty'>NO STABLE RELATIONS FOUND · RECORD INCOMPLETE</div>";
       modalOpenWorld.classList.add("hidden");
       modalOpenWorld.removeAttribute("href");
     }
@@ -2528,6 +2946,9 @@
       const type=card.dataset.type || "archive";
       const kind=getWorldKind(name);
       modalKicker.textContent="ARCHIVE DOSSIER · INDEXED FILE";
+      archiveModalPanel.className="archive-modal-panel classification-" + status.toLowerCase();
+      modalSerial.textContent="FILE " + id;
+      modalAccessStamp.textContent = status === "RESTRICTED" ? "RESTRICTED ACCESS" : status === "ANOMALOUS" ? "ANOMALOUS RECORD" : status === "ACTIVE" ? "ACTIVE RECORD" : "ARCHIVE VERIFIED";
       modalTitle.textContent=name;
       modalCopy.textContent="Indexed world record. The world continues independently of the visitor.";
       modalFile.textContent="FILE " + id;
@@ -2540,6 +2961,16 @@
       modalIntegrity.textContent="VALID";
       modalFooterLeft.textContent="ARCHIVE RECORD · FILE " + id;
       modalFooterRight.textContent="OBSERVATION CONTINUES";
+      const relatedIds=relatedMap[kind] || [];
+      relatedList.innerHTML=relatedIds.length ? relatedIds.slice(0,2).map(function(rel){
+        return "<button class='related-file' type='button' data-related-id='" + rel[0] + "'><span class='related-main'><span class='related-id'>FILE " + rel[0] + "</span><strong>" + rel[1] + "</strong></span><span class='related-state'>INDEXED</span></button>";
+      }).join("") : "<div class='related-empty'>NO STABLE RELATIONS FOUND · ARCHIVE CLASSIFICATION ONLY</div>";
+      relatedList.querySelectorAll(".related-file").forEach(function(btn){
+        btn.addEventListener("click",function(){
+          const relatedCard=document.querySelector('#featuredGrid .card[data-archive-id="' + btn.dataset.relatedId + '"]');
+          if(relatedCard){ openArchiveModal(relatedCard); pushActivity("RELATED FILE","FILE " + btn.dataset.relatedId,"OBSERVING"); }
+        });
+      });
       modalOpenWorld.href=card.href;
       modalOpenWorld.classList.remove("hidden");
     }
@@ -2683,7 +3114,7 @@
         const status = card.dataset.status || "STABLE";
         const cardType = card.querySelector(".type");
         const type = cardType ? cardType.textContent : "ARCHIVE";
-        return "<button class='timeline-file' type='button' data-timeline-file='" + id + "'>" +
+        return "<button class='timeline-file' type='button' data-timeline-file='" + id + "' data-status='" + status + "'>" +
           "<span class='timeline-id'><span>FILE " + id + "</span><span class='timeline-state'>" + status + "</span></span>" +
           "<strong>" + name + "</strong><span>" + type + " · INDEXED</span></button>";
       }).join("");
