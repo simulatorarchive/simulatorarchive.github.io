@@ -1564,10 +1564,265 @@
     to { transform:rotate(360deg); }
   }
 
+  
+  .archive-runtime {
+    position:fixed;
+    inset:auto 20px 20px auto;
+    z-index:50;
+    width:min(360px,calc(100vw - 40px));
+    pointer-events:none;
+  }
+  .runtime-toast {
+    border:1px solid rgba(190,198,208,.18);
+    background:rgba(5,7,10,.88);
+    backdrop-filter:blur(18px);
+    box-shadow:0 18px 36px rgba(0,0,0,.35);
+    padding:14px 15px;
+    color:#9da6b0;
+    font:700 8px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+    opacity:0;
+    transform:translateY(12px);
+    transition:opacity .25s ease,transform .25s ease,border-color .35s ease;
+  }
+  .runtime-toast.show { opacity:1; transform:translateY(0); }
+  .runtime-toast .runtime-title { color:#e0e4e8; margin-bottom:4px; }
+  .runtime-toast .runtime-sub { color:#5e6874; }
+  .archive-modal {
+    position:fixed;
+    inset:0;
+    z-index:60;
+    display:grid;
+    place-items:center;
+    padding:24px;
+    background:rgba(1,2,4,.66);
+    backdrop-filter:blur(10px);
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .25s ease,visibility .25s ease;
+  }
+  .archive-modal.open { opacity:1; visibility:visible; }
+  .archive-modal-panel {
+    position:relative;
+    width:min(520px,100%);
+    border:1px solid rgba(190,198,208,.18);
+    background:linear-gradient(145deg,#0c0f13,#06080b);
+    box-shadow:0 32px 90px rgba(0,0,0,.55);
+    padding:28px;
+    transform:translateY(10px) scale(.985);
+    transition:transform .3s ease;
+  }
+  .archive-modal.open .archive-modal-panel { transform:translateY(0) scale(1); }
+  .modal-kicker { color:#59636f; font:800 8px monospace; letter-spacing:.18em; text-transform:uppercase; }
+  .modal-title { margin:12px 0 8px; color:#e6eaee; font:600 38px/1 Georgia,serif; }
+  .modal-copy { margin:0; color:#727d88; font-size:10px; line-height:1.8; }
+  .modal-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0;
+    margin-top:22px;
+    border-top:1px solid rgba(190,198,208,.10);
+    border-bottom:1px solid rgba(190,198,208,.10);
+  }
+  .modal-cell { padding:13px 0; border-right:1px solid rgba(190,198,208,.07); }
+  .modal-cell:nth-child(2n) { padding-left:16px; border-right:0; }
+  .modal-cell span { display:block; color:#4f5965; font:700 7px monospace; letter-spacing:.14em; text-transform:uppercase; }
+  .modal-cell b { display:block; margin-top:5px; color:#c9d0d7; font-size:9px; letter-spacing:.07em; }
+  .modal-close {
+    position:absolute;
+    top:15px;
+    right:15px;
+    width:28px;
+    height:28px;
+    border:1px solid rgba(190,198,208,.12);
+    background:transparent;
+    color:#7d8792;
+    cursor:pointer;
+    font-size:16px;
+    line-height:1;
+  }
+  .modal-close:hover { color:#e6eaee; border-color:rgba(215,222,229,.28); }
+  .detected-file {
+    position:fixed;
+    left:50%;
+    top:86px;
+    z-index:55;
+    width:min(460px,calc(100vw - 32px));
+    transform:translate(-50%,-12px);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .35s ease,transform .35s ease;
+  }
+  .detected-file.show {
+    opacity:1;
+    transform:translate(-50%,0);
+    pointer-events:auto;
+  }
+  .detected-file button {
+    width:100%;
+    border:1px solid rgba(190,198,208,.18);
+    background:rgba(5,7,10,.92);
+    color:#d7dce1;
+    padding:13px 16px;
+    text-align:left;
+    cursor:pointer;
+    box-shadow:0 18px 38px rgba(0,0,0,.32);
+  }
+  .detected-file .detected-head {
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    font:800 8px monospace;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+  }
+  .detected-file .detected-status { color:#7a858f; }
+  .detected-file .detected-copy {
+    display:block;
+    margin-top:6px;
+    color:#525d68;
+    font:700 7px monospace;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+  }
+
+  .activity-layout {
+    display:grid;
+    grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);
+    gap:14px;
+    margin-top:20px;
+  }
+  .activity-panel, .archive-state {
+    border:1px solid rgba(190,198,208,.11);
+    background:linear-gradient(145deg,rgba(255,255,255,.026),rgba(255,255,255,.008)),#08090c;
+    padding:22px;
+  }
+  .activity-list { display:grid; gap:0; margin-top:14px; }
+  .activity-entry {
+    display:grid;
+    grid-template-columns:70px 1fr auto;
+    gap:12px;
+    align-items:center;
+    min-height:38px;
+    border-bottom:1px solid rgba(190,198,208,.07);
+    color:#69737e;
+    font:700 7px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+  }
+  .activity-entry:first-child { border-top:1px solid rgba(190,198,208,.07); }
+  .activity-entry time { color:#47515d; }
+  .activity-entry strong { color:#aab2ba; font-weight:800; }
+  .activity-entry .entry-state { color:#5d6772; text-align:right; }
+  .state-title { color:#d9dee3; font:600 25px/1 Georgia,serif; margin:0 0 15px; }
+  .state-row {
+    display:flex;
+    justify-content:space-between;
+    gap:14px;
+    padding:10px 0;
+    border-bottom:1px solid rgba(190,198,208,.07);
+    color:#5a6571;
+    font:700 8px/1.4 monospace;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+  }
+  .state-row b { color:#c5cbd2; }
+  .season-index {
+    border-top:1px solid rgba(190,198,208,.10);
+    margin-top:20px;
+    padding-top:4px;
+  }
+  .season-record {
+    display:grid;
+    grid-template-columns:62px 1fr auto;
+    gap:10px;
+    align-items:center;
+    min-height:38px;
+    border-bottom:1px solid rgba(190,198,208,.07);
+    color:#5d6772;
+    font:700 7px/1.35 monospace;
+    letter-spacing:.10em;
+    text-transform:uppercase;
+  }
+  .season-record b { color:#bcc4cc; }
+  .season-record .season-state { color:#676f79; text-align:right; }
+  body[data-archive-phase="day"] .app {
+    background:
+      radial-gradient(circle at 14% 0%,rgba(160,170,184,.15),transparent 28%),
+      radial-gradient(circle at 86% 12%,rgba(112,126,146,.08),transparent 26%),
+      radial-gradient(circle at 50% 75%,rgba(255,255,255,.028),transparent 34%),
+      #040507;
+  }
+  body[data-archive-phase="night"] .app {
+    background:
+      radial-gradient(circle at 14% 0%,rgba(90,105,128,.10),transparent 28%),
+      radial-gradient(circle at 86% 12%,rgba(74,89,112,.05),transparent 26%),
+      radial-gradient(circle at 50% 75%,rgba(255,255,255,.016),transparent 34%),
+      #020306;
+  }
+  body[data-archive-phase="deep-night"] .app {
+    background:
+      radial-gradient(circle at 18% 4%,rgba(52,72,105,.07),transparent 24%),
+      radial-gradient(circle at 82% 70%,rgba(67,78,100,.04),transparent 25%),
+      #010204;
+  }
+  body[data-archive-phase="deep-night"] .archive-object { --object-opacity:.84; }
+  body[data-archive-phase="deep-night"] .archive-scanline { opacity:.78; }
+  .card .meta-row {
+    position:relative;
+    z-index:4;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:7px;
+    margin:3px 15px 8px 18px;
+    color:#56616c;
+    font:700 6.5px/1.35 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.10em;
+    text-transform:uppercase;
+  }
+  .card .meta-pill {
+    padding:4px 5px;
+    border:1px solid rgba(190,198,208,.08);
+    background:rgba(5,7,10,.22);
+  }
+  .card .meta-pill strong { color:#7d8792; font-weight:800; }
+  .card .meta-pill.state-anomalous strong { color:#c08b91; }
+  .card .meta-pill.state-restricted strong { color:#b79c69; }
+  .card .meta-pill.state-active strong { color:var(--accent); }
+  .card .meta-pill.activity-on { color:#69747f; }
+  .card .meta-pill.activity-live { color:#84909b; }
+  .archive-corner {
+    position:absolute;
+    left:14px;
+    bottom:13px;
+    z-index:5;
+    color:#4b555f;
+    font:700 6.5px monospace;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+  }
+  .card:hover .archive-corner { color:#737e89; }
+  @media (max-width:900px) {
+    .activity-layout { grid-template-columns:1fr; }
+  }
+  @media (max-width:640px) {
+    .archive-runtime { right:11px; bottom:11px; width:min(330px,calc(100vw - 22px)); }
+    .detected-file { top:70px; }
+    .activity-entry { grid-template-columns:55px 1fr; }
+    .activity-entry .entry-state { grid-column:2; text-align:left; }
+    .season-record { grid-template-columns:52px 1fr; }
+    .season-record .season-state { grid-column:2; text-align:left; }
+  }
+
   </style>
 </head>
 <body>
   <main class="app">
+    <div class="archive-runtime" id="archiveRuntime" aria-live="polite"><div class="runtime-toast" id="runtimeToast"><div class="runtime-title" id="runtimeTitle"></div><div class="runtime-sub" id="runtimeSub"></div></div></div>
+    <div class="detected-file" id="detectedFile"><button type="button" id="detectedFileButton"><span class="detected-head"><span>FILE DETECTED</span><span class="detected-status">UNRESOLVED</span></span><span class="detected-copy">UNKNOWN ENTRY · ARCHIVE STATUS: INCOMPLETE</span></button></div>
+    <div class="archive-modal" id="archiveModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="archive-modal-panel"><button class="modal-close" id="modalClose" type="button" aria-label="Close">×</button><div class="modal-kicker">UNINDEXED ARCHIVE FILE</div><h2 class="modal-title" id="modalTitle">Unknown Entry</h2><p class="modal-copy">The archive detected a file with no stable world index. The record remains incomplete.</p><div class="modal-grid"><div class="modal-cell"><span>Status</span><b>UNRESOLVED</b></div><div class="modal-cell"><span>Access</span><b>UNVERIFIED</b></div><div class="modal-cell"><span>Origin</span><b>UNKNOWN</b></div><div class="modal-cell"><span>Continuation</span><b>OBSERVING</b></div></div></div></div>
 
     <div class="archive-atmosphere" aria-hidden="true">
       <div class="archive-noise"></div>
@@ -1584,7 +1839,7 @@
         <nav class="nav" aria-label="Archive navigation">
           <a href="#featured">Featured</a>
           <a href="#new">New worlds</a>
-          <a href="#seasons">Seasons</a>
+          <a href="#activity">Activity</a><a href="#seasons">Seasons</a>
         </nav>
         <div class="archive-status">Archive online</div>
       </div>
@@ -1690,6 +1945,35 @@
       </div>
     </section>
 
+
+    <section class="section" id="activity">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Archive Activity</h2>
+          <p>Live session · observation continues</p>
+        </div>
+        <div class="activity-layout">
+          <div class="activity-panel">
+            <div class="section-head" style="margin:0;padding-bottom:12px;">
+              <h2>Recent Activity</h2>
+              <p id="activityClock">LOCAL SESSION</p>
+            </div>
+            <div class="activity-list" id="activityList"></div>
+          </div>
+          <aside class="archive-state">
+            <div class="state-title">Archive State</div>
+            <div class="state-row"><span>Worlds indexed</span><b id="worldCount">25</b></div>
+            <div class="state-row"><span>Active seasons</span><b id="seasonCount">1</b></div>
+            <div class="state-row"><span>Archive status</span><b>ONLINE</b></div>
+            <div class="season-index">
+              <div class="season-record"><span>01</span><b>OCTOBER ARCHIVE</b><span class="season-state">ACTIVE</span></div>
+              <div class="season-record"><span>02</span><b>WINTER ARCHIVE</b><span class="season-state">LOCKED</span></div>
+              <div class="season-record"><span>03</span><b>UNKNOWN</b><span class="season-state">RESTRICTED</span></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
     <section class="section" id="featured">
       <div class="shell">
         <div class="section-head">
@@ -1707,31 +1991,31 @@
           </div>
         </div>
         <div class="grid" id="featuredGrid">
-          <a class="card has-cover" style="--accent:#8faee8" data-name="Star Wars Simulator" data-type="live" href="https://janitorai.com/characters/757de9d2-de53-44b7-848b-e55c49d15605_character-star-wars-simulator" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="https://raw.githubusercontent.com/simulatorarchive/simulatorarchive.github.io/main/images/STARWARSSIMULATORARCHIVE.png" alt="Star Wars Simulator cover"><span class="index">01</span><span class="type">Live</span><h3>Star Wars Simulator</h3><p>Galactic life, factions, conflict and independent events.</p></a>
-          <a class="card has-cover" style="--accent:#d9a441" data-name="One Piece Living World" data-type="anime" href="https://janitorai.com/characters/e0d3990e-7655-4571-b0e5-f79008c3e95a_character-one-piece-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/ONEPIECELIVINGWORLD.png" alt="One Piece Living World cover"><span class="index">02</span><span class="type">Anime</span><h3>One Piece Living World</h3><p>Pirates, marines, islands and a world that keeps moving.</p></a>
-          <a class="card has-cover" style="--accent:#b88fe8" data-name="Harry Potter Simulator" data-type="live" href="https://janitorai.com/characters/493fb354-be70-43ba-942c-379f631ba801_character-harry-potter-wizarding-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/HARRYPOTTERSIMULATOR.png" alt="Harry Potter Simulator cover"><span class="index">03</span><span class="type">Live</span><h3>Harry Potter Simulator</h3><p>Wizarding life beyond a single chosen storyline.</p></a>
-          <a class="card has-cover" style="--accent:#b7c85a" data-name="Breaking Bad Living World" data-type="live" href="https://janitorai.com/characters/dbc40298-8e1d-4f1b-8f22-2cac6957b7ca_character-breaking-bad-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/BREAKINGBADLIVINGWORLD.png" alt="Breaking Bad Living World cover"><span class="index">04</span><span class="type">Live</span><h3>Breaking Bad Living World</h3><p>Albuquerque, ambition, consequence and lives beyond the main story.</p></a>
-          <a class="card has-cover" style="--accent:#e46b6b" data-name="Marvel Earth 616 Living World" data-type="live" href="https://janitorai.com/characters/0c83e035-bb85-468b-8104-998232b5c3c1_character-marvel-earth-616-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/MARVELEARTH616LIVINGWORLD.png" alt="Marvel Earth 616 Living World cover"><span class="index">05</span><span class="type">Live</span><h3>Marvel Earth 616 Living World</h3><p>Heroes, civilians, villains and the everyday Marvel world.</p></a>
-          <a class="card has-cover" style="--accent:#5fa8d3" data-name="DC Earth 0 Living World" data-type="live" href="https://janitorai.com/characters/91ef9c77-53ce-4e95-811b-0d8efe707ffc_character-dc-earth-0-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/DCEARTH0LIVINGWORLD.png" alt="DC Earth 0 Living World cover"><span class="index">06</span><span class="type">Live</span><h3>DC Earth 0 Living World</h3><p>Gotham, Metropolis and a wider world independent of the player.</p></a>
-          <a class="card has-cover" style="--accent:#8d96a3" data-name="SCP Simulator" data-type="original" href="https://janitorai.com/characters/fb840fa6-b297-46cc-8a62-75ca96251140_character-scp-simulator" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/SCPSIMULATOR.png" alt="SCP Simulator cover"><span class="index">07</span><span class="type">Other</span><h3>SCP Simulator</h3><p>Anomalies, personnel, facilities and consequences.</p></a>
-          <a class="card has-cover" style="--accent:#d98aa5" data-name="Neon Genesis Evangelion Living World" data-type="anime" href="https://janitorai.com/characters/a65114cb-3f87-4c1d-b117-a1c03ebf88e1_character-neon-genesis-evangelion-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/NEONGENEZISEVAGELIONLIVINGWORLD.png" alt="Neon Genesis Evangelion Living World cover"><span class="index">08</span><span class="type">Anime</span><h3>Neon Genesis Evangelion Living World</h3><p>Tokyo-3, institutions, pilots and life between crises.</p></a>
-          <a class="card has-cover" style="--accent:#b7c86f" data-name="Solo Leveling Living World" data-type="anime" href="https://janitorai.com/characters/ffe6abb0-942b-4d8f-a5dd-91e35b11dc30_character-solo-leveling-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/SOLOLEVELINGLIVINGWORLD.png" alt="Solo Leveling Living World cover"><span class="index">09</span><span class="type">Anime</span><h3>Solo Leveling Living World</h3><p>Hunters, gates, guilds and a changing modern world.</p></a>
-          <a class="card has-cover" style="--accent:#c9cbd1" data-name="Attack on Titan Living World" data-type="anime" href="https://janitorai.com/characters/4a261630-818f-447c-adb5-ac60436929d7_character-attack-on-titan-simulator" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/ATTACKONTITANLIVINGWORLD.png" alt="Attack on Titan Living World cover"><span class="index">10</span><span class="type">Anime</span><h3>Attack on Titan Living World</h3><p>Military life, walls, politics and dangerous shifting conditions.</p></a>
-          <a class="card has-cover" style="--accent:#ef8d45" data-name="One Punch Man Living World" data-type="anime" href="https://janitorai.com/characters/b5ad9a3a-c9cd-44e7-aa0e-d89bba80ba2e_character-one-punch-man-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/ONEPUNCHMANLIVINGWORLD.png" alt="One Punch Man Living World cover"><span class="index">11</span><span class="type">Anime</span><h3>One Punch Man Living World</h3><p>Hero ranks, cities, monsters and ordinary life around them.</p></a>
-          <a class="card has-cover" style="--accent:#f0a65a" data-name="Naruto Living World" data-type="anime" href="https://janitorai.com/characters/ecc32806-fe43-4b1c-9fd4-158c89c76fee_character-naruto-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/NARUTOLIVINGWORLD.png" alt="Naruto Living World cover"><span class="index">12</span><span class="type">Anime</span><h3>Naruto Living World</h3><p>Villages, shinobi, missions and lives beyond the main cast.</p></a>
-          <a class="card has-cover" style="--accent:#e59b3d" data-name="Dragon Ball Living World" data-type="anime" href="https://janitorai.com/characters/5672ddd6-1213-4145-bbb2-8c2dc79a8633_character-dragon-ball-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/DRAGONBALLLIVINGWORLD.png" alt="Dragon Ball Living World cover"><span class="index">13</span><span class="type">Anime</span><h3>Dragon Ball Living World</h3><p>A world full of travel, martial arts, towns and strange encounters.</p></a>
-          <a class="card has-cover" style="--accent:#4fa8e0" data-name="Blue Lock Living World" data-type="anime" href="https://janitorai.com/characters/5d55c30b-1151-4991-beca-a91bbe3a85f1_character-blue-lock-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/BLUELOCKLIVINGWORLD.png" alt="Blue Lock Living World cover"><span class="index">14</span><span class="type">Anime</span><h3>Blue Lock Living World</h3><p>Competition, football careers and relationships under pressure.</p></a>
-          <a class="card has-cover" style="--accent:#8bb7a0" data-name="The Walten Files Living World" data-type="original" href="https://janitorai.com/characters/8138a8e8-0be1-405d-9276-552f498da0e7_character-the-walten-files-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/THEWALTENFILESLIVINGWORLD.png" alt="The Walten Files Living World cover"><span class="index">15</span><span class="type">Other</span><h3>The Walten Files Living World</h3><p>Uneasy ordinary places, missing histories and slow-building dread.</p></a>
-          <a class="card has-cover" style="--accent:#d07c63" data-name="Cyberpunk 2077 Living World" data-type="games" href="https://janitorai.com/characters/8e0c471a-9499-411f-940e-b44dd44dd8e0_character-cyberpunk-2077-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/CYBERPUNK2077LIVINGWORLD.png" alt="Cyberpunk 2077 Living World cover"><span class="index">16</span><span class="type">Games</span><h3>Cyberpunk 2077 Living World</h3><p>Night City keeps its own schedule, factions and street-level lives.</p></a>
-          <a class="card has-cover" style="--accent:#8fc98f" data-name="The Witcher Living World" data-type="games" href="https://janitorai.com/characters/1f704d25-54e7-4a93-b5f1-fd38b6eb0223_character-the-witcher-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/THEWITHERLIVINGWORLD.png" alt="The Witcher Living World cover"><span class="index">17</span><span class="type">Games</span><h3>The Witcher Living World</h3><p>Settlements, monsters, contracts and lives far from the player.</p></a>
-          <a class="card has-cover" style="--accent:#c77de8" data-name="JoJo Entire Universe Living World" data-type="anime" href="https://janitorai.com/characters/fd8e8696-0ada-42f4-b875-c0766e4fac98_character-jojo-entire-universe-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/JOJOENTIREUNIVERSELIVINGWORLD.png" alt="JoJo Entire Universe Living World cover"><span class="index">18</span><span class="type">Anime</span><h3>JoJo Entire Universe Living World</h3><p>Generations, strange powers, cities and personal rivalries.</p></a>
-          <a class="card has-cover" style="--accent:#aeb4bd" data-name="Death Note Living World" data-type="anime" href="https://janitorai.com/characters/6a2dd0c4-c365-4622-93ac-e60b7d4b8d86_character-death-note-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/DEATHNOTELIVINGWORLD.png" alt="Death Note Living World cover"><span class="index">19</span><span class="type">Anime</span><h3>Death Note Living World</h3><p>Grounded Tokyo life, investigations, careers and uncertainty.</p></a>
-          <a class="card has-cover" style="--accent:#6ea4c9" data-name="Watch Dogs Living World" data-type="games" href="https://janitorai.com/characters/07b9d030-7afe-420d-abbb-0acbcefe95d0_character-watch-dogs-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/WATCHDOGSLIVINGWORLD.png" alt="Watch Dogs Living World cover"><span class="index">20</span><span class="type">Games</span><h3>Watch Dogs Living World</h3><p>Urban life, surveillance, crime and competing interests.</p></a>
-          <a class="card has-cover" style="--accent:#c4a76b" data-name="Clone Wars Any Life Simulator" data-type="games" href="https://janitorai.com/characters/aea94138-4c47-403c-9cc3-37f9875824de_character-clone-wars-any-life-simulator" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/CLONEWARSANYLIFESIMULATOR.png" alt="Clone Wars Any Life Simulator cover"><span class="index">21</span><span class="type">Games</span><h3>Clone Wars Any Life Simulator</h3><p>Life in the Republic era across military and civilian roles.</p></a>
-          <a class="card has-cover" style="--accent:#d7a05d" data-name="Hutt Simulator" data-type="games" href="https://janitorai.com/characters/e5980db0-d22e-4141-be64-f7e5e6791d20_character-hutt-simulator" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/HUTTSIMULATOR.png" alt="Hutt Simulator cover"><span class="index">22</span><span class="type">Games</span><h3>Hutt Simulator</h3><p>Underworld business, power, debt and shifting loyalties.</p></a>
-          <a class="card has-cover" style="--accent:#b86b78" data-name="Castlevania Living World" data-type="live" href="https://janitorai.com/characters/d9350c76-d62d-4ac9-ba9f-5e85e94e00e2_character-castlevania-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/CASTLEVANIALIVINGWORLD.png" alt="Castlevania Living World cover"><span class="index">23</span><span class="type">Live</span><h3>Castlevania Living World</h3><p>Wallachia, dangerous roads and lives beneath an uneasy night.</p></a>
-          <a class="card has-cover" style="--accent:#c1b7a1" data-name="Berserk Living World" data-type="anime" href="https://janitorai.com/characters/24d3d952-baf3-414b-8217-da6bc5aaf8bd_character-berserk-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/BERSERKLIVINGWORLD.png" alt="Berserk Living World cover"><span class="index">24</span><span class="type">Anime</span><h3>Berserk Living World</h3><p>A harsh medieval world where survival and consequence matter.</p></a>
-          <a class="card has-cover" style="--accent:#a66ad6" data-name="Jujutsu Kaisen Living World" data-type="anime" href="https://janitorai.com/characters/89b10859-33ac-4a2b-9583-68d34177dba9_character-jujutsu-kaisen-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/JUJUTSUKAISENLIVINGWORLD.png" alt="Jujutsu Kaisen Living World cover"><span class="index">25</span><span class="type">Anime</span><h3>Jujutsu Kaisen Living World</h3><div class="meta-row"><span>FILE 25</span><span class="state">ACTIVE</span></div><p>Curses, sorcerers and ordinary lives moving beneath unseen danger.</p></a>
+          <a class="card has-cover" style="--accent:#8faee8" data-archive-id="001" data-status="STABLE" data-activity="HIGH" data-name="Star Wars Simulator" data-type="live" href="https://janitorai.com/characters/757de9d2-de53-44b7-848b-e55c49d15605_character-star-wars-simulator" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="https://raw.githubusercontent.com/simulatorarchive/simulatorarchive.github.io/main/images/STARWARSSIMULATORARCHIVE.png" alt="Star Wars Simulator cover"><span class="index">01</span><span class="type">Live</span><h3>Star Wars Simulator</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-high">ACTIVITY <strong>HIGH</strong></span></div><span class="archive-corner">ARCHIVE ID · 001</span><p>Galactic life, factions, conflict and independent events.</p></a>
+          <a class="card has-cover" style="--accent:#d9a441" data-archive-id="002" data-status="STABLE" data-activity="HIGH" data-name="One Piece Living World" data-type="anime" href="https://janitorai.com/characters/e0d3990e-7655-4571-b0e5-f79008c3e95a_character-one-piece-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/ONEPIECELIVINGWORLD.png" alt="One Piece Living World cover"><span class="index">02</span><span class="type">Anime</span><h3>One Piece Living World</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-high">ACTIVITY <strong>HIGH</strong></span></div><span class="archive-corner">ARCHIVE ID · 002</span><p>Pirates, marines, islands and a world that keeps moving.</p></a>
+          <a class="card has-cover" style="--accent:#b88fe8" data-archive-id="003" data-status="STABLE" data-activity="ONGOING" data-name="Harry Potter Simulator" data-type="live" href="https://janitorai.com/characters/493fb354-be70-43ba-942c-379f631ba801_character-harry-potter-wizarding-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/HARRYPOTTERSIMULATOR.png" alt="Harry Potter Simulator cover"><span class="index">03</span><span class="type">Live</span><h3>Harry Potter Simulator</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-ongoing">ACTIVITY <strong>ONGOING</strong></span></div><span class="archive-corner">ARCHIVE ID · 003</span><p>Wizarding life beyond a single chosen storyline.</p></a>
+          <a class="card has-cover" style="--accent:#b7c85a" data-archive-id="004" data-status="ACTIVE" data-activity="HIGH" data-name="Breaking Bad Living World" data-type="live" href="https://janitorai.com/characters/dbc40298-8e1d-4f1b-8f22-2cac6957b7ca_character-breaking-bad-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/BREAKINGBADLIVINGWORLD.png" alt="Breaking Bad Living World cover"><span class="index">04</span><span class="type">Live</span><h3>Breaking Bad Living World</h3><div class="meta-row"><span class="meta-pill state-active">STATUS <strong>ACTIVE</strong></span><span class="meta-pill activity-high">ACTIVITY <strong>HIGH</strong></span></div><span class="archive-corner">ARCHIVE ID · 004</span><p>Albuquerque, ambition, consequence and lives beyond the main story.</p></a>
+          <a class="card has-cover" style="--accent:#e46b6b" data-archive-id="005" data-status="STABLE" data-activity="ONGOING" data-name="Marvel Earth 616 Living World" data-type="live" href="https://janitorai.com/characters/0c83e035-bb85-468b-8104-998232b5c3c1_character-marvel-earth-616-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/MARVELEARTH616LIVINGWORLD.png" alt="Marvel Earth 616 Living World cover"><span class="index">05</span><span class="type">Live</span><h3>Marvel Earth 616 Living World</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-ongoing">ACTIVITY <strong>ONGOING</strong></span></div><span class="archive-corner">ARCHIVE ID · 005</span><p>Heroes, civilians, villains and the everyday Marvel world.</p></a>
+          <a class="card has-cover" style="--accent:#5fa8d3" data-archive-id="006" data-status="STABLE" data-activity="ONGOING" data-name="DC Earth 0 Living World" data-type="live" href="https://janitorai.com/characters/91ef9c77-53ce-4e95-811b-0d8efe707ffc_character-dc-earth-0-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/DCEARTH0LIVINGWORLD.png" alt="DC Earth 0 Living World cover"><span class="index">06</span><span class="type">Live</span><h3>DC Earth 0 Living World</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-ongoing">ACTIVITY <strong>ONGOING</strong></span></div><span class="archive-corner">ARCHIVE ID · 006</span><p>Gotham, Metropolis and a wider world independent of the player.</p></a>
+          <a class="card has-cover" style="--accent:#8d96a3" data-archive-id="007" data-status="RESTRICTED" data-activity="UNPREDICTABLE" data-name="SCP Simulator" data-type="original" href="https://janitorai.com/characters/fb840fa6-b297-46cc-8a62-75ca96251140_character-scp-simulator" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/SCPSIMULATOR.png" alt="SCP Simulator cover"><span class="index">07</span><span class="type">Other</span><h3>SCP Simulator</h3><div class="meta-row"><span class="meta-pill state-restricted">STATUS <strong>RESTRICTED</strong></span><span class="meta-pill activity-unpredictable">ACTIVITY <strong>UNPREDICTABLE</strong></span></div><span class="archive-corner">ARCHIVE ID · 007</span><p>Anomalies, personnel, facilities and consequences.</p></a>
+          <a class="card has-cover" style="--accent:#d98aa5" data-archive-id="008" data-status="STABLE" data-activity="ONGOING" data-name="Neon Genesis Evangelion Living World" data-type="anime" href="https://janitorai.com/characters/a65114cb-3f87-4c1d-b117-a1c03ebf88e1_character-neon-genesis-evangelion-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/NEONGENEZISEVAGELIONLIVINGWORLD.png" alt="Neon Genesis Evangelion Living World cover"><span class="index">08</span><span class="type">Anime</span><h3>Neon Genesis Evangelion Living World</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-ongoing">ACTIVITY <strong>ONGOING</strong></span></div><span class="archive-corner">ARCHIVE ID · 008</span><p>Tokyo-3, institutions, pilots and life between crises.</p></a>
+          <a class="card has-cover" style="--accent:#b7c86f" data-archive-id="009" data-status="STABLE" data-activity="ONGOING" data-name="Solo Leveling Living World" data-type="anime" href="https://janitorai.com/characters/ffe6abb0-942b-4d8f-a5dd-91e35b11dc30_character-solo-leveling-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/SOLOLEVELINGLIVINGWORLD.png" alt="Solo Leveling Living World cover"><span class="index">09</span><span class="type">Anime</span><h3>Solo Leveling Living World</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-ongoing">ACTIVITY <strong>ONGOING</strong></span></div><span class="archive-corner">ARCHIVE ID · 009</span><p>Hunters, gates, guilds and a changing modern world.</p></a>
+          <a class="card has-cover" style="--accent:#c9cbd1" data-archive-id="010" data-status="STABLE" data-activity="ONGOING" data-name="Attack on Titan Living World" data-type="anime" href="https://janitorai.com/characters/4a261630-818f-447c-adb5-ac60436929d7_character-attack-on-titan-simulator" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/ATTACKONTITANLIVINGWORLD.png" alt="Attack on Titan Living World cover"><span class="index">10</span><span class="type">Anime</span><h3>Attack on Titan Living World</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-ongoing">ACTIVITY <strong>ONGOING</strong></span></div><span class="archive-corner">ARCHIVE ID · 010</span><p>Military life, walls, politics and dangerous shifting conditions.</p></a>
+          <a class="card has-cover" style="--accent:#ef8d45" data-archive-id="011" data-status="STABLE" data-activity="ONGOING" data-name="One Punch Man Living World" data-type="anime" href="https://janitorai.com/characters/b5ad9a3a-c9cd-44e7-aa0e-d89bba80ba2e_character-one-punch-man-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/ONEPUNCHMANLIVINGWORLD.png" alt="One Punch Man Living World cover"><span class="index">11</span><span class="type">Anime</span><h3>One Punch Man Living World</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-ongoing">ACTIVITY <strong>ONGOING</strong></span></div><span class="archive-corner">ARCHIVE ID · 011</span><p>Hero ranks, cities, monsters and ordinary life around them.</p></a>
+          <a class="card has-cover" style="--accent:#f0a65a" data-archive-id="012" data-status="STABLE" data-activity="ONGOING" data-name="Naruto Living World" data-type="anime" href="https://janitorai.com/characters/ecc32806-fe43-4b1c-9fd4-158c89c76fee_character-naruto-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/NARUTOLIVINGWORLD.png" alt="Naruto Living World cover"><span class="index">12</span><span class="type">Anime</span><h3>Naruto Living World</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-ongoing">ACTIVITY <strong>ONGOING</strong></span></div><span class="archive-corner">ARCHIVE ID · 012</span><p>Villages, shinobi, missions and lives beyond the main cast.</p></a>
+          <a class="card has-cover" style="--accent:#e59b3d" data-archive-id="013" data-status="STABLE" data-activity="HIGH" data-name="Dragon Ball Living World" data-type="anime" href="https://janitorai.com/characters/5672ddd6-1213-4145-bbb2-8c2dc79a8633_character-dragon-ball-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/DRAGONBALLLIVINGWORLD.png" alt="Dragon Ball Living World cover"><span class="index">13</span><span class="type">Anime</span><h3>Dragon Ball Living World</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-high">ACTIVITY <strong>HIGH</strong></span></div><span class="archive-corner">ARCHIVE ID · 013</span><p>A world full of travel, martial arts, towns and strange encounters.</p></a>
+          <a class="card has-cover" style="--accent:#4fa8e0" data-archive-id="014" data-status="STABLE" data-activity="ONGOING" data-name="Blue Lock Living World" data-type="anime" href="https://janitorai.com/characters/5d55c30b-1151-4991-beca-a91bbe3a85f1_character-blue-lock-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/BLUELOCKLIVINGWORLD.png" alt="Blue Lock Living World cover"><span class="index">14</span><span class="type">Anime</span><h3>Blue Lock Living World</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-ongoing">ACTIVITY <strong>ONGOING</strong></span></div><span class="archive-corner">ARCHIVE ID · 014</span><p>Competition, football careers and relationships under pressure.</p></a>
+          <a class="card has-cover" style="--accent:#8bb7a0" data-archive-id="015" data-status="ACTIVE" data-activity="LOW" data-name="The Walten Files Living World" data-type="original" href="https://janitorai.com/characters/8138a8e8-0be1-405d-9276-552f498da0e7_character-the-walten-files-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/THEWALTENFILESLIVINGWORLD.png" alt="The Walten Files Living World cover"><span class="index">15</span><span class="type">Other</span><h3>The Walten Files Living World</h3><div class="meta-row"><span class="meta-pill state-active">STATUS <strong>ACTIVE</strong></span><span class="meta-pill activity-low">ACTIVITY <strong>LOW</strong></span></div><span class="archive-corner">ARCHIVE ID · 015</span><p>Uneasy ordinary places, missing histories and slow-building dread.</p></a>
+          <a class="card has-cover" style="--accent:#d07c63" data-archive-id="016" data-status="ACTIVE" data-activity="HIGH" data-name="Cyberpunk 2077 Living World" data-type="games" href="https://janitorai.com/characters/8e0c471a-9499-411f-940e-b44dd44dd8e0_character-cyberpunk-2077-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/CYBERPUNK2077LIVINGWORLD.png" alt="Cyberpunk 2077 Living World cover"><span class="index">16</span><span class="type">Games</span><h3>Cyberpunk 2077 Living World</h3><div class="meta-row"><span class="meta-pill state-active">STATUS <strong>ACTIVE</strong></span><span class="meta-pill activity-high">ACTIVITY <strong>HIGH</strong></span></div><span class="archive-corner">ARCHIVE ID · 016</span><p>Night City keeps its own schedule, factions and street-level lives.</p></a>
+          <a class="card has-cover" style="--accent:#8fc98f" data-archive-id="017" data-status="STABLE" data-activity="ONGOING" data-name="The Witcher Living World" data-type="games" href="https://janitorai.com/characters/1f704d25-54e7-4a93-b5f1-fd38b6eb0223_character-the-witcher-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/THEWITHERLIVINGWORLD.png" alt="The Witcher Living World cover"><span class="index">17</span><span class="type">Games</span><h3>The Witcher Living World</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-ongoing">ACTIVITY <strong>ONGOING</strong></span></div><span class="archive-corner">ARCHIVE ID · 017</span><p>Settlements, monsters, contracts and lives far from the player.</p></a>
+          <a class="card has-cover" style="--accent:#c77de8" data-archive-id="018" data-status="STABLE" data-activity="ONGOING" data-name="JoJo Entire Universe Living World" data-type="anime" href="https://janitorai.com/characters/fd8e8696-0ada-42f4-b875-c0766e4fac98_character-jojo-entire-universe-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/JOJOENTIREUNIVERSELIVINGWORLD.png" alt="JoJo Entire Universe Living World cover"><span class="index">18</span><span class="type">Anime</span><h3>JoJo Entire Universe Living World</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-ongoing">ACTIVITY <strong>ONGOING</strong></span></div><span class="archive-corner">ARCHIVE ID · 018</span><p>Generations, strange powers, cities and personal rivalries.</p></a>
+          <a class="card has-cover" style="--accent:#aeb4bd" data-archive-id="019" data-status="ANOMALOUS" data-activity="UNRESOLVED" data-name="Death Note Living World" data-type="anime" href="https://janitorai.com/characters/6a2dd0c4-c365-4622-93ac-e60b7d4b8d86_character-death-note-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/DEATHNOTELIVINGWORLD.png" alt="Death Note Living World cover"><span class="index">19</span><span class="type">Anime</span><h3>Death Note Living World</h3><div class="meta-row"><span class="meta-pill state-anomalous">STATUS <strong>ANOMALOUS</strong></span><span class="meta-pill activity-unresolved">ACTIVITY <strong>UNRESOLVED</strong></span></div><span class="archive-corner">ARCHIVE ID · 019</span><p>Grounded Tokyo life, investigations, careers and uncertainty.</p></a>
+          <a class="card has-cover" style="--accent:#6ea4c9" data-archive-id="020" data-status="ACTIVE" data-activity="HIGH" data-name="Watch Dogs Living World" data-type="games" href="https://janitorai.com/characters/07b9d030-7afe-420d-abbb-0acbcefe95d0_character-watch-dogs-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/WATCHDOGSLIVINGWORLD.png" alt="Watch Dogs Living World cover"><span class="index">20</span><span class="type">Games</span><h3>Watch Dogs Living World</h3><div class="meta-row"><span class="meta-pill state-active">STATUS <strong>ACTIVE</strong></span><span class="meta-pill activity-high">ACTIVITY <strong>HIGH</strong></span></div><span class="archive-corner">ARCHIVE ID · 020</span><p>Urban life, surveillance, crime and competing interests.</p></a>
+          <a class="card has-cover" style="--accent:#c4a76b" data-archive-id="021" data-status="STABLE" data-activity="ONGOING" data-name="Clone Wars Any Life Simulator" data-type="games" href="https://janitorai.com/characters/aea94138-4c47-403c-9cc3-37f9875824de_character-clone-wars-any-life-simulator" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/CLONEWARSANYLIFESIMULATOR.png" alt="Clone Wars Any Life Simulator cover"><span class="index">21</span><span class="type">Games</span><h3>Clone Wars Any Life Simulator</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-ongoing">ACTIVITY <strong>ONGOING</strong></span></div><span class="archive-corner">ARCHIVE ID · 021</span><p>Life in the Republic era across military and civilian roles.</p></a>
+          <a class="card has-cover" style="--accent:#d7a05d" data-archive-id="022" data-status="STABLE" data-activity="ONGOING" data-name="Hutt Simulator" data-type="games" href="https://janitorai.com/characters/e5980db0-d22e-4141-be64-f7e5e6791d20_character-hutt-simulator" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/HUTTSIMULATOR.png" alt="Hutt Simulator cover"><span class="index">22</span><span class="type">Games</span><h3>Hutt Simulator</h3><div class="meta-row"><span class="meta-pill state-stable">STATUS <strong>STABLE</strong></span><span class="meta-pill activity-ongoing">ACTIVITY <strong>ONGOING</strong></span></div><span class="archive-corner">ARCHIVE ID · 022</span><p>Underworld business, power, debt and shifting loyalties.</p></a>
+          <a class="card has-cover" style="--accent:#b86b78" data-archive-id="023" data-status="ACTIVE" data-activity="LOW" data-name="Castlevania Living World" data-type="live" href="https://janitorai.com/characters/d9350c76-d62d-4ac9-ba9f-5e85e94e00e2_character-castlevania-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/CASTLEVANIALIVINGWORLD.png" alt="Castlevania Living World cover"><span class="index">23</span><span class="type">Live</span><h3>Castlevania Living World</h3><div class="meta-row"><span class="meta-pill state-active">STATUS <strong>ACTIVE</strong></span><span class="meta-pill activity-low">ACTIVITY <strong>LOW</strong></span></div><span class="archive-corner">ARCHIVE ID · 023</span><p>Wallachia, dangerous roads and lives beneath an uneasy night.</p></a>
+          <a class="card has-cover" style="--accent:#c1b7a1" data-archive-id="024" data-status="ACTIVE" data-activity="LOW" data-name="Berserk Living World" data-type="anime" href="https://janitorai.com/characters/24d3d952-baf3-414b-8217-da6bc5aaf8bd_character-berserk-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/BERSERKLIVINGWORLD.png" alt="Berserk Living World cover"><span class="index">24</span><span class="type">Anime</span><h3>Berserk Living World</h3><div class="meta-row"><span class="meta-pill state-active">STATUS <strong>ACTIVE</strong></span><span class="meta-pill activity-low">ACTIVITY <strong>LOW</strong></span></div><span class="archive-corner">ARCHIVE ID · 024</span><p>A harsh medieval world where survival and consequence matter.</p></a>
+          <a class="card has-cover" style="--accent:#a66ad6" data-archive-id="025" data-status="STABLE" data-activity="ONGOING" data-name="Jujutsu Kaisen Living World" data-type="anime" href="https://janitorai.com/characters/89b10859-33ac-4a2b-9583-68d34177dba9_character-jujutsu-kaisen-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/JUJUTSUKAISENLIVINGWORLD.png" alt="Jujutsu Kaisen Living World cover"><span class="index">25</span><span class="type">Anime</span><h3>Jujutsu Kaisen Living World</h3><div class="meta-row"><span>FILE 25</span><span class="state">ACTIVE</span></div><p>Curses, sorcerers and ordinary lives moving beneath unseen danger.</p></a>
         </div>
         <div class="empty" id="empty">No archived world matches your search.</div>
       </div>
@@ -1819,7 +2103,8 @@
       });
     });
 
-    /* Living archive atmosphere */
+
+    /* Archive interface + living atmosphere */
     const particleField = document.getElementById("archiveParticles");
     for (let i = 0; i < 28; i++) {
       const p = document.createElement("span");
@@ -1876,31 +2161,32 @@
     ];
 
     const worldColors = {
-      starwars:"rgba(105, 143, 218, .12)",
-      cyberpunk:"rgba(244, 223, 66, .11)",
-      breakingbad:"rgba(183, 200, 90, .12)",
-      castlevania:"rgba(151, 95, 117, .11)",
-      jjk:"rgba(170, 106, 226, .11)",
-      witcher:"rgba(188, 198, 207, .10)",
-      dragonball:"rgba(230, 150, 49, .10)"
+      starwars:"rgba(105,143,218,.12)",
+      cyberpunk:"rgba(244,223,66,.11)",
+      breakingbad:"rgba(183,200,90,.12)",
+      castlevania:"rgba(151,95,117,.11)",
+      jjk:"rgba(170,106,226,.11)",
+      witcher:"rgba(188,198,207,.10)",
+      dragonball:"rgba(230,150,49,.10)"
     };
-
+    const rareKeys = new Set(["scp","eva","walten","deathnote","hutt","castlevania","berserk","jjk"]);
+    const commonBoost = new Set(["starwars","cyberpunk","dragonball","naruto","breakingbad"]);
     let lastObjectIndex = -1;
     let objectTimer = null;
     let focusedWorld = null;
     let sessionSeconds = 0;
-    const rareKeys = new Set(["scp","eva","walten","deathnote","hutt","castlevania","berserk","jjk"]);
-    const commonBoost = new Set(["starwars","cyberpunk","dragonball","naruto","breakingbad"]);
+    let activeObject = null;
+
+    function setArchivePhase() {
+      const hour = new Date().getHours();
+      const phase = hour >= 7 && hour < 18 ? "day" : hour >= 18 && hour < 24 ? "night" : "deep-night";
+      document.body.dataset.archivePhase = phase;
+      return phase;
+    }
+    setArchivePhase();
+    setInterval(setArchivePhase, 60000);
 
     function chooseObject() {
-      if (focusedWorld) {
-        const focused = objectLibrary.findIndex(function(item) { return item[0] === focusedWorld; });
-        if (focused >= 0 && Math.random() < 0.68) {
-          lastObjectIndex = focused;
-          return objectLibrary[focused];
-        }
-      }
-
       const pool = [];
       objectLibrary.forEach(function(item, index) {
         if (item[0] === "unknown") {
@@ -1913,14 +2199,20 @@
           pool.push(index,index,index);
         }
       });
-
-      if (sessionSeconds > 50 && Math.random() < 0.13) {
+      const deepNight = document.body.dataset.archivePhase === "deep-night";
+      if (sessionSeconds > 50 && Math.random() < (deepNight ? 0.22 : 0.13)) {
         const unknownIndex = objectLibrary.findIndex(function(item) { return item[0] === "unknown"; });
-        if (unknownIndex >= 0) pool.push(unknownIndex,unknownIndex,unknownIndex,unknownIndex);
+        pool.push(unknownIndex,unknownIndex,unknownIndex,unknownIndex);
       }
-
+      if (focusedWorld && Math.random() < 0.72) {
+        const focused = objectLibrary.findIndex(function(item) { return item[0] === focusedWorld; });
+        if (focused >= 0) {
+          lastObjectIndex = focused;
+          return objectLibrary[focused];
+        }
+      }
       let index = pool[Math.floor(Math.random() * pool.length)];
-      if (objectLibrary.length > 1 && index === lastObjectIndex) {
+      if (index === lastObjectIndex) {
         index = (index + 1 + Math.floor(Math.random() * (objectLibrary.length - 1))) % objectLibrary.length;
       }
       lastObjectIndex = index;
@@ -1946,13 +2238,17 @@
 
     function setAmbient(kind, color) {
       const ambient = worldColors[kind] || "rgba(180,188,198,.07)";
-      if (archiveAmbient) {
-        archiveAmbient.style.setProperty("--ambient-color", ambient);
-      }
+      if (archiveAmbient) archiveAmbient.style.setProperty("--ambient-color", ambient);
       activateNetwork(kind, color);
     }
 
+    function removeActiveObject() {
+      if (activeObject && activeObject.isConnected) activeObject.remove();
+      activeObject = null;
+    }
+
     function spawnArchiveObject() {
+      removeActiveObject();
       const picked = chooseObject();
       const kind = picked[0];
       const name = picked[1];
@@ -1961,7 +2257,6 @@
       const rarity = picked[4];
       const art = picked[5];
       const path = objectPositions[Math.floor(Math.random() * objectPositions.length)];
-
       const el = document.createElement("div");
       el.className = "archive-object obj-" + kind;
       el.style.setProperty("--sx", path.sx);
@@ -1977,34 +2272,40 @@
         "<div class='object-label'>ARCHIVE OBJECT // " + name +
         "<span class='minor'>" + (rarity === "rare" ? "UNUSUAL" : "INDEX " + number) + "</span></div>";
       archiveObjects.appendChild(el);
+      activeObject = el;
 
       setAmbient(kind, color);
       flashAt(18 + Math.random() * 64, 20 + Math.random() * 60, color);
 
+      const duration = parseFloat(getComputedStyle(el).animationDuration) * 1000;
       el.addEventListener("animationend", function(event) {
         if (event.target !== el) return;
         setAmbient("neutral","#cbd3dc");
+        if (activeObject === el) activeObject = null;
         el.remove();
+        objectTimer = setTimeout(function() {
+          objectTimer = null;
+          spawnArchiveObject();
+        }, 5200 + Math.random() * 7000);
       });
 
-      const removeAfter = 15.5 * 1000;
-      setTimeout(function() { if (el.isConnected) el.remove(); }, removeAfter);
-
-      objectTimer = setTimeout(function() {
-        objectTimer = null;
-        spawnArchiveObject();
-      }, 5200 + Math.random() * 7000);
+      setTimeout(function() {
+        if (el.isConnected) {
+          el.remove();
+          if (activeObject === el) activeObject = null;
+        }
+      }, duration + 350);
     }
 
     function stopArchiveObjects() {
-      document.querySelectorAll(".archive-object").forEach(function(el) { el.remove(); });
+      removeActiveObject();
       if (objectTimer) clearTimeout(objectTimer);
       objectTimer = null;
     }
 
     function startArchiveObjects() {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      if (!objectTimer) {
+      if (!objectTimer && !activeObject) {
         objectTimer = setTimeout(function() {
           objectTimer = null;
           spawnArchiveObject();
@@ -2018,54 +2319,74 @@
     });
     startArchiveObjects();
 
-    setInterval(function() {
-      sessionSeconds += 1;
-    }, 1000);
+    setInterval(function() { sessionSeconds += 1; }, 1000);
+
+    const runtimeToast = document.getElementById("runtimeToast");
+    const runtimeTitle = document.getElementById("runtimeTitle");
+    const runtimeSub = document.getElementById("runtimeSub");
+    let toastTimer = null;
+    function showRuntime(title, sub) {
+      if (!runtimeToast) return;
+      runtimeTitle.textContent = title;
+      runtimeSub.textContent = sub;
+      runtimeToast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() { runtimeToast.classList.remove("show"); }, 4200);
+    }
+
+    const detectedFile = document.getElementById("detectedFile");
+    const archiveModal = document.getElementById("archiveModal");
+    const detectedFileButton = document.getElementById("detectedFileButton");
+    const modalClose = document.getElementById("modalClose");
+    function showDetectedFile() {
+      if (!detectedFile) return;
+      detectedFile.classList.add("show");
+      showRuntime("NEW SIGNAL DETECTED","Unindexed archive file · review available");
+      setTimeout(function() { detectedFile.classList.remove("show"); }, 7200);
+    }
+    function openArchiveModal() {
+      if (archiveModal) archiveModal.classList.add("open");
+    }
+    function closeArchiveModal() {
+      if (archiveModal) archiveModal.classList.remove("open");
+    }
+    detectedFileButton && detectedFileButton.addEventListener("click", openArchiveModal);
+    modalClose && modalClose.addEventListener("click", closeArchiveModal);
+    archiveModal && archiveModal.addEventListener("click", function(event) {
+      if (event.target === archiveModal) closeArchiveModal();
+    });
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") closeArchiveModal();
+    });
+
+    const focusMap = [
+      ["star wars","starwars"],["breaking bad","breakingbad"],["cyberpunk","cyberpunk"],["dragon ball","dragonball"],
+      ["blue lock","bluelock"],["one piece","onepiece"],["one punch man","opm"],["death note","deathnote"],
+      ["attack on titan","aot"],["jujutsu kaisen","jjk"],["the witcher","witcher"],["castlevania","castlevania"],
+      ["berserk","berserk"],["watch dogs","watchdogs"],["naruto","naruto"],["solo leveling","solo"],["evangelion","eva"],
+      ["walt","walten"],["scp","scp"],["hutt","hutt"],["jojo","jojo"],["marvel","marvel"],["dc","dc"],
+      ["clone wars","clonewars"],["harry potter","harry"]
+    ];
 
     document.querySelectorAll(".card.has-cover").forEach(function(card) {
       card.addEventListener("pointerenter", function() {
-        focusedWorld = (card.dataset.name || "").toLowerCase();
-        focusedWorld = focusedWorld
-          .replace(" living world","")
-          .replace(" simulator","")
-          .replace(" entire universe","");
-        if (focusedWorld.includes("star wars")) focusedWorld = "starwars";
-        else if (focusedWorld.includes("breaking bad")) focusedWorld = "breakingbad";
-        else if (focusedWorld.includes("cyberpunk")) focusedWorld = "cyberpunk";
-        else if (focusedWorld.includes("dragon ball")) focusedWorld = "dragonball";
-        else if (focusedWorld.includes("blue lock")) focusedWorld = "bluelock";
-        else if (focusedWorld.includes("one piece")) focusedWorld = "onepiece";
-        else if (focusedWorld.includes("one punch man")) focusedWorld = "opm";
-        else if (focusedWorld.includes("death note")) focusedWorld = "deathnote";
-        else if (focusedWorld.includes("attack on titan")) focusedWorld = "aot";
-        else if (focusedWorld.includes("jujutsu kaisen")) focusedWorld = "jjk";
-        else if (focusedWorld.includes("the witcher")) focusedWorld = "witcher";
-        else if (focusedWorld.includes("castlevania")) focusedWorld = "castlevania";
-        else if (focusedWorld.includes("berserk")) focusedWorld = "berserk";
-        else if (focusedWorld.includes("watch dogs")) focusedWorld = "watchdogs";
-        else if (focusedWorld.includes("naruto")) focusedWorld = "naruto";
-        else if (focusedWorld.includes("solo leveling")) focusedWorld = "solo";
-        else if (focusedWorld.includes("evangelion")) focusedWorld = "eva";
-        else if (focusedWorld.includes("walt")) focusedWorld = "walten";
-        else if (focusedWorld.includes("scp")) focusedWorld = "scp";
-        else if (focusedWorld.includes("hutt")) focusedWorld = "hutt";
-        else if (focusedWorld.includes("jojo")) focusedWorld = "jojo";
-        else if (focusedWorld.includes("marvel")) focusedWorld = "marvel";
-        else if (focusedWorld.includes("dc")) focusedWorld = "dc";
-        else focusedWorld = null;
-
+        const name = (card.dataset.name || "").toLowerCase();
+        focusedWorld = null;
+        focusMap.forEach(function(pair) {
+          if (name.includes(pair[0])) focusedWorld = pair[1];
+        });
         card.classList.add("world-focused");
         const activeItem = objectLibrary.find(function(item) { return item[0] === focusedWorld; });
-        if (activeItem) setAmbient(activeItem[0], activeItem[3]);
+        if (activeItem) {
+          setAmbient(activeItem[0], activeItem[3]);
+          showRuntime("WORLD FOCUS · " + activeItem[1],"Next archive object biased toward FILE " + activeItem[2]);
+        }
       });
 
       card.addEventListener("pointerleave", function() {
         card.classList.remove("world-focused");
         focusedWorld = null;
         setAmbient("neutral","#cbd3dc");
-        document.querySelectorAll(".archive-object .object-inner").forEach(function(inner) {
-          inner.style.transform = "translate(-50%,-50%) translate3d(0,0,0)";
-        });
       });
 
       card.addEventListener("pointermove", function(event) {
@@ -2078,28 +2399,68 @@
           (-py * 2.2).toFixed(2) + "deg) rotateY(" +
           (px * 2.2).toFixed(2) + "deg)";
       });
-
-      card.addEventListener("pointerleave", function() {
-        card.style.transform = "";
-      });
+      card.addEventListener("pointerleave", function() { card.style.transform = ""; });
     });
 
     document.addEventListener("pointermove", function(event) {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const x = event.clientX / window.innerWidth - 0.5;
       const y = event.clientY / window.innerHeight - 0.5;
-
       document.querySelectorAll(".object-inner").forEach(function(inner) {
-        inner.style.transform =
-          "translate(-50%,-50%) translate3d(" +
-          (x * -18).toFixed(2) + "px," +
-          (y * -13).toFixed(2) + "px,0)";
+        inner.style.transform = "translate(-50%,-50%) translate3d(" +
+          (x * -18).toFixed(2) + "px," + (y * -13).toFixed(2) + "px,0)";
       });
-
-      document.documentElement.style.setProperty("--ambient-x", (x * -24).toFixed(2) + "px");
-      document.documentElement.style.setProperty("--ambient-y", (y * -20).toFixed(2) + "px");
+      document.documentElement.style.setProperty("--ambient-x",(x * -24).toFixed(2) + "px");
+      document.documentElement.style.setProperty("--ambient-y",(y * -20).toFixed(2) + "px");
     }, { passive:true });
 
+    const activityList = document.getElementById("activityList");
+    const activityClock = document.getElementById("activityClock");
+    const worldCount = document.getElementById("worldCount");
+    const seasonCount = document.getElementById("seasonCount");
+    function currentTime() {
+      return new Date().toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
+    }
+    function updateArchiveCounts() {
+      const count = document.querySelectorAll("#featuredGrid .card").length;
+      const seasons = document.querySelectorAll(".season").length;
+      if (worldCount) worldCount.textContent = String(count);
+      if (seasonCount) seasonCount.textContent = String(seasons);
+      if (activityClock) activityClock.textContent = "LOCAL " + currentTime();
+    }
+    updateArchiveCounts();
+    setInterval(updateArchiveCounts,60000);
+
+    const activityPool = [
+      ["INDEX PASS","STAR WARS","ACTIVE"],
+      ["WORLD WATCH","BREAKING BAD","ALBUQUERQUE"],
+      ["SIGNAL","CYBERPUNK 2077","NIGHT CITY"],
+      ["ARCHIVE CHECK","THE WITCHER","STABLE"],
+      ["INDEX PASS","JUJUTSU KAISEN","ACTIVE"],
+      ["WORLD WATCH","DRAGON BALL","ONGOING"],
+      ["CASE UPDATE","DEATH NOTE","UNRESOLVED"],
+      ["SITE WATCH","SCP","RESTRICTED"],
+      ["SEASON WATCH","OCTOBER ARCHIVE","ACTIVE"]
+    ];
+    let activityOffset = 0;
+    function renderActivity() {
+      if (!activityList) return;
+      const entries = [];
+      for (let i = 0; i < 6; i++) {
+        const item = activityPool[(activityOffset + i) % activityPool.length];
+        const d = new Date(Date.now() - (i * 4 + 1) * 60000);
+        const time = d.toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
+        entries.push("<div class='activity-entry'><time>" + time + "</time><strong>" + item[0] + " · " + item[1] + "</strong><span class='entry-state'>" + item[2] + "</span></div>");
+      }
+      activityList.innerHTML = entries.join("");
+    }
+    renderActivity();
+    setInterval(function() {
+      activityOffset = (activityOffset + 1) % activityPool.length;
+      renderActivity();
+    }, 6500);
+
+    const archiveAmbientBase = document.getElementById("archiveAmbient");
     window.addEventListener("scroll", function() {
       const y = window.scrollY;
       const sections = [
@@ -2110,9 +2471,9 @@
       let best = sections[0];
       sections.forEach(function(section) {
         const node = document.getElementById(section.id);
-        if (node && node.offsetTop <= y + window.innerHeight * 0.40) best = section;
+        if (node && node.offsetTop <= y + window.innerHeight * .40) best = section;
       });
-      if (archiveAmbient && !focusedWorld) archiveAmbient.style.setProperty("--ambient-color", best.color);
+      if (archiveAmbientBase && !focusedWorld) archiveAmbientBase.style.setProperty("--ambient-color", best.color);
     }, { passive:true });
 
     let signalIndex = 0;
@@ -2138,7 +2499,9 @@
       signalIndex += 1;
     }
     updateSignal();
-    setInterval(updateSignal, 5200);
+    setInterval(updateSignal,5200);
+
+    setTimeout(showDetectedFile, 48000 + Math.random() * 28000);
 
 
   </script>
