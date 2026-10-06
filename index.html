@@ -1070,14 +1070,12 @@
     box-shadow:0 0 16px rgba(194,199,205,.16),inset 0 0 18px rgba(194,199,205,.08);
   }
   .obj-witcher .medallion::before {
-    content:"🐺";
+    content:"";
     position:absolute;
-    inset:7px;
-    display:grid;
-    place-items:center;
-    filter:grayscale(1);
-    font-size:35px;
-    opacity:.76;
+    inset:9px;
+    border:1px solid rgba(224,229,234,.30);
+    border-radius:50%;
+    box-shadow:inset 0 0 10px rgba(214,220,226,.08);
   }
   .obj-witcher .medallion::after {
     content:"WITCHER";
@@ -1087,6 +1085,22 @@
     color:rgba(192,201,210,.36);
     font:800 7px monospace;
     letter-spacing:.16em;
+  }
+  .obj-witcher .wolf-mark {
+    position:absolute;
+    left:17px;
+    top:17px;
+    width:36px;
+    height:36px;
+    opacity:.78;
+    filter:drop-shadow(0 0 5px rgba(218,224,230,.12));
+  }
+  .obj-witcher .wolf-mark path {
+    fill:none;
+    stroke:#d2d8de;
+    stroke-width:2.4;
+    stroke-linejoin:round;
+    stroke-linecap:round;
   }
 
   .obj-berserk .greatsword {
@@ -1655,7 +1669,7 @@
       ["bluelock","BLUE LOCK","14","<span class='football'></span>"],
       ["walten","THE WALTEN FILES","15","<span class='cassette'></span>"],
       ["cyberpunk","CYBERPUNK 2077","16","<span class='cyber-ring'></span><span class='cyber-mark'>2077</span>"],
-      ["witcher","THE WITCHER","17","<span class='medallion'></span>"],
+      ["witcher","THE WITCHER","17","<span class='medallion'><svg class='wolf-mark' viewBox='0 0 100 100' aria-hidden='true'><path d='M24 31 L36 39 L43 27 L50 35 L57 27 L64 39 L76 31 L70 57 Q63 73 50 79 Q37 73 30 57 Z'></path><path d='M38 50 L45 53 L50 48 L55 53 L62 50 M41 60 Q50 69 59 60 M33 44 L39 43 M61 43 L67 44'></path></svg></span>"],
       ["jojo","JOJO","18","<span class='stand'></span>"],
       ["deathnote","DEATH NOTE","19","<span class='book'></span>"],
       ["watchdogs","WATCH DOGS","20","<span class='scan'></span>"],
