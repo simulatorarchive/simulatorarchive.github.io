@@ -1629,6 +1629,25 @@
   .modal-cell:nth-child(2n) { padding-left:16px; border-right:0; }
   .modal-cell span { display:block; color:#4f5965; font:700 7px monospace; letter-spacing:.14em; text-transform:uppercase; }
   .modal-cell b { display:block; margin-top:5px; color:#c9d0d7; font-size:9px; letter-spacing:.07em; }
+  .modal-open-world {
+    display:inline-flex;
+    margin-top:22px;
+    padding:12px 14px;
+    border:1px solid rgba(190,198,208,.20);
+    color:#d9dfe5;
+    text-decoration:none;
+    font-size:8px;
+    font-weight:850;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease;
+  }
+  .modal-open-world:hover {
+    background:rgba(190,198,208,.055);
+    border-color:rgba(215,222,229,.34);
+    color:#f0f2f4;
+    transform:translateY(-1px);
+  }
   .modal-close {
     position:absolute;
     top:15px;
@@ -1822,7 +1841,21 @@
   <main class="app">
     <div class="archive-runtime" id="archiveRuntime" aria-live="polite"><div class="runtime-toast" id="runtimeToast"><div class="runtime-title" id="runtimeTitle"></div><div class="runtime-sub" id="runtimeSub"></div></div></div>
     <div class="detected-file" id="detectedFile"><button type="button" id="detectedFileButton"><span class="detected-head"><span>FILE DETECTED</span><span class="detected-status">UNRESOLVED</span></span><span class="detected-copy">UNKNOWN ENTRY · ARCHIVE STATUS: INCOMPLETE</span></button></div>
-    <div class="archive-modal" id="archiveModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="archive-modal-panel"><button class="modal-close" id="modalClose" type="button" aria-label="Close">×</button><div class="modal-kicker">UNINDEXED ARCHIVE FILE</div><h2 class="modal-title" id="modalTitle">Unknown Entry</h2><p class="modal-copy">The archive detected a file with no stable world index. The record remains incomplete.</p><div class="modal-grid"><div class="modal-cell"><span>Status</span><b>UNRESOLVED</b></div><div class="modal-cell"><span>Access</span><b>UNVERIFIED</b></div><div class="modal-cell"><span>Origin</span><b>UNKNOWN</b></div><div class="modal-cell"><span>Continuation</span><b>OBSERVING</b></div></div></div></div>
+    <div class="archive-modal" id="archiveModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="archive-modal-panel">
+      <button class="modal-close" id="modalClose" type="button" aria-label="Close">×</button>
+      <div class="modal-kicker" id="modalKicker">UNINDEXED ARCHIVE FILE</div>
+      <h2 class="modal-title" id="modalTitle">Unknown Entry</h2>
+      <p class="modal-copy" id="modalCopy">The archive detected a file with no stable world index. The record remains incomplete.</p>
+      <div class="modal-grid">
+        <div class="modal-cell"><span>File</span><b id="modalFile">??</b></div>
+        <div class="modal-cell"><span>Format</span><b id="modalFormat">UNKNOWN</b></div>
+        <div class="modal-cell"><span>Status</span><b id="modalStatus">UNRESOLVED</b></div>
+        <div class="modal-cell"><span>Activity</span><b id="modalActivity">UNKNOWN</b></div>
+        <div class="modal-cell"><span>Region</span><b id="modalRegion">UNKNOWN</b></div>
+        <div class="modal-cell"><span>Continuation</span><b id="modalContinuation">OBSERVING</b></div>
+      </div>
+      <a class="modal-open-world hidden" id="modalOpenWorld" href="#" target="_blank" rel="noopener noreferrer">OPEN WORLD ↗</a>
+    </div></div>
 
     <div class="archive-atmosphere" aria-hidden="true">
       <div class="archive-noise"></div>
@@ -2339,26 +2372,95 @@
     const archiveModal = document.getElementById("archiveModal");
     const detectedFileButton = document.getElementById("detectedFileButton");
     const modalClose = document.getElementById("modalClose");
+    const modalKicker = document.getElementById("modalKicker");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalCopy = document.getElementById("modalCopy");
+    const modalFile = document.getElementById("modalFile");
+    const modalFormat = document.getElementById("modalFormat");
+    const modalStatus = document.getElementById("modalStatus");
+    const modalActivity = document.getElementById("modalActivity");
+    const modalRegion = document.getElementById("modalRegion");
+    const modalContinuation = document.getElementById("modalContinuation");
+    const modalOpenWorld = document.getElementById("modalOpenWorld");
+
+    const regionMap = {
+      "starwars":"GALACTIC SPACE","onepiece":"GRAND LINE","harry":"UNITED KINGDOM","breakingbad":"ALBUQUERQUE, NM",
+      "marvel":"EARTH-616","dc":"EARTH-0","scp":"SITE NETWORK","eva":"TOKYO-3, JAPAN","solo":"SOUTH KOREA",
+      "aot":"PARADIS / MAINLAND","opm":"HERO ASSOCIATION WORLD","naruto":"SHINOBI WORLD","dragonball":"EARTH",
+      "bluelock":"JAPAN","walten":"BRIGHTON, COLORADO","cyberpunk":"NIGHT CITY","witcher":"THE CONTINENT",
+      "jojo":"MULTIPLE ERAS","deathnote":"TOKYO, JAPAN","watchdogs":"CHICAGO, IL","clonewars":"GALACTIC REPUBLIC",
+      "hutt":"OUTER RIM","castlevania":"WALLACHIA","berserk":"MIDLAND","jjk":"TOKYO, JAPAN"
+    };
+
+    function getWorldKind(name) {
+      const lower = (name || "").toLowerCase();
+      for (let i=0;i<focusMap.length;i++) {
+        if (lower.includes(focusMap[i][0])) return focusMap[i][1];
+      }
+      return null;
+    }
+    function formatType(name, type) {
+      const lower=(name||"").toLowerCase();
+      if (lower.includes("any life simulator")) return "LIFE SIMULATOR";
+      if (lower.includes("simulator")) return "SIMULATOR";
+      if (lower.includes("living world")) return "LIVING WORLD";
+      return type ? type.toUpperCase() : "ARCHIVE";
+    }
+    function setModalUnknown() {
+      modalKicker.textContent="UNINDEXED ARCHIVE FILE";
+      modalTitle.textContent="Unknown Entry";
+      modalCopy.textContent="The archive detected a file with no stable world index. The record remains incomplete.";
+      modalFile.textContent="??";
+      modalFormat.textContent="UNKNOWN";
+      modalStatus.textContent="UNRESOLVED";
+      modalActivity.textContent="UNKNOWN";
+      modalRegion.textContent="UNKNOWN";
+      modalContinuation.textContent="OBSERVING";
+      modalOpenWorld.classList.add("hidden");
+      modalOpenWorld.removeAttribute("href");
+    }
+    function setModalWorld(card) {
+      const name=card.dataset.name || "Unknown World";
+      const id=card.dataset.archiveId || "??";
+      const status=card.dataset.status || "STABLE";
+      const activity=card.dataset.activity || "ONGOING";
+      const type=card.dataset.type || "archive";
+      const kind=getWorldKind(name);
+      modalKicker.textContent="ARCHIVE DOSSIER · INDEXED FILE";
+      modalTitle.textContent=name;
+      modalCopy.textContent="Indexed world record. The world continues independently of the visitor.";
+      modalFile.textContent="FILE " + id;
+      modalFormat.textContent=formatType(name,type);
+      modalStatus.textContent=status;
+      modalActivity.textContent=activity;
+      modalRegion.textContent=regionMap[kind] || "ARCHIVE REGION";
+      modalContinuation.textContent="ONGOING";
+      modalOpenWorld.href=card.href;
+      modalOpenWorld.classList.remove("hidden");
+    }
+    function openArchiveModal(card) {
+      if (card) setModalWorld(card); else setModalUnknown();
+      archiveModal && archiveModal.classList.add("open");
+      document.body.style.overflow="hidden";
+    }
+    function closeArchiveModal() {
+      archiveModal && archiveModal.classList.remove("open");
+      document.body.style.overflow="";
+    }
     function showDetectedFile() {
       if (!detectedFile) return;
       detectedFile.classList.add("show");
       showRuntime("NEW SIGNAL DETECTED","Unindexed archive file · review available");
       pushActivity("FILE DETECTED","UNKNOWN ENTRY","UNRESOLVED");
-      setTimeout(function() { detectedFile.classList.remove("show"); }, 7200);
+      setTimeout(function(){ detectedFile.classList.remove("show"); },7200);
     }
-    function openArchiveModal() {
-      if (archiveModal) archiveModal.classList.add("open");
-    }
-    function closeArchiveModal() {
-      if (archiveModal) archiveModal.classList.remove("open");
-    }
-    detectedFileButton && detectedFileButton.addEventListener("click", openArchiveModal);
-    modalClose && modalClose.addEventListener("click", closeArchiveModal);
-    archiveModal && archiveModal.addEventListener("click", function(event) {
-      if (event.target === archiveModal) closeArchiveModal();
+    detectedFileButton && detectedFileButton.addEventListener("click",function(){ openArchiveModal(null); });
+    modalClose && modalClose.addEventListener("click",closeArchiveModal);
+    archiveModal && archiveModal.addEventListener("click",function(event){
+      if (event.target===archiveModal) closeArchiveModal();
     });
-    document.addEventListener("keydown", function(event) {
-      if (event.key === "Escape") closeArchiveModal();
+    document.addEventListener("keydown",function(event){
+      if (event.key==="Escape") closeArchiveModal();
     });
 
     const focusMap = [
@@ -2371,6 +2473,10 @@
     ];
 
     document.querySelectorAll(".card.has-cover").forEach(function(card) {
+      card.addEventListener("click", function(event) {
+        event.preventDefault();
+        openArchiveModal(card);
+      });
       card.addEventListener("pointerenter", function() {
         const name = (card.dataset.name || "").toLowerCase();
         focusedWorld = null;
