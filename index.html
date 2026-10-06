@@ -1819,21 +1819,6 @@
       });
     });
 
-    const signals = [
-      "ARCHIVE SIGNAL · A world does not stop because you leave it.",
-      "ARCHIVE SIGNAL · New entries are added when worlds become worth entering.",
-      "ARCHIVE SIGNAL · Some of the best moments happen outside the main cast.",
-      "ARCHIVE SIGNAL · Every link is a door back to the living world.",
-      "ARCHIVE SIGNAL · The archive records worlds. It does not control them."
-    ];
-    let signalIndex = 0;
-    const signal = document.getElementById("signal");
-    setInterval(() => {
-      signalIndex = (signalIndex + 1) % signals.length;
-      signal.textContent = signals[signalIndex];
-    }, 4200);
-
-
     /* Living archive atmosphere */
     const particleField = document.getElementById("archiveParticles");
     for (let i = 0; i < 28; i++) {
