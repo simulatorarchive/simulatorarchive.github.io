@@ -623,10 +623,775 @@
     .season h3 { font-size:26px; }
   }
 
+  
+  .archive-atmosphere {
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .archive-noise {
+    position:absolute;
+    inset:0;
+    opacity:.14;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,.05) 0 1px, transparent 1px),
+      radial-gradient(circle at 70% 62%, rgba(255,255,255,.035) 0 1px, transparent 1px);
+    background-size:150px 150px, 220px 220px;
+    animation:noiseDrift 24s linear infinite;
+  }
+  @keyframes noiseDrift {
+    from { transform:translate3d(0,0,0); }
+    to { transform:translate3d(28px,-18px,0); }
+  }
+  .archive-scanline {
+    position:absolute;
+    left:0;
+    width:100%;
+    height:1px;
+    top:-5%;
+    background:linear-gradient(90deg,transparent,rgba(210,218,226,.11) 20%,rgba(210,218,226,.22) 50%,rgba(210,218,226,.08) 80%,transparent);
+    box-shadow:0 0 18px rgba(210,218,226,.05);
+    opacity:0;
+    animation:archiveScan 11s ease-in-out infinite;
+  }
+  @keyframes archiveScan {
+    0%,66%,100% { top:-5%; opacity:0; }
+    69% { opacity:1; }
+    91% { top:105%; opacity:.6; }
+    94% { opacity:0; }
+  }
+  .archive-particles { position:absolute; inset:0; }
+  .archive-particle {
+    position:absolute;
+    width:2px;
+    height:2px;
+    border-radius:50%;
+    background:rgba(206,214,222,.45);
+    box-shadow:0 0 7px rgba(206,214,222,.18);
+    opacity:.12;
+    animation:particleFloat var(--duration) ease-in-out infinite alternate;
+    animation-delay:var(--delay);
+  }
+  @keyframes particleFloat {
+    from { transform:translate3d(0,0,0) scale(.7); opacity:.07; }
+    to { transform:translate3d(var(--dx),var(--dy),0) scale(1.35); opacity:.32; }
+  }
+  .archive-objects { position:absolute; inset:0; }
+  .archive-object {
+    position:absolute;
+    left:0;
+    top:0;
+    width:220px;
+    height:140px;
+    opacity:0;
+    filter:drop-shadow(0 12px 28px rgba(0,0,0,.34));
+    will-change:transform,opacity;
+    animation:objectTransit var(--object-duration) cubic-bezier(.18,.7,.2,1) both;
+  }
+  @keyframes objectTransit {
+    0% {
+      transform:translate3d(var(--sx),var(--sy),0) rotate(var(--sr)) scale(.72);
+      opacity:0;
+    }
+    12% { opacity:var(--object-opacity,.82); }
+    48% { opacity:var(--object-opacity,.82); }
+    88% { opacity:.18; }
+    100% {
+      transform:translate3d(var(--ex),var(--ey),0) rotate(var(--er)) scale(1.04);
+      opacity:0;
+    }
+  }
+  .object-inner {
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:100%;
+    height:100%;
+    transform:translate(-50%,-50%) translate3d(0,0,0);
+    transition:transform .35s ease-out;
+  }
+  .archive-object .object-label {
+    position:absolute;
+    left:50%;
+    top:calc(50% + 66px);
+    transform:translateX(-50%);
+    width:max-content;
+    max-width:220px;
+    color:rgba(213,220,227,.52);
+    font:800 7px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.17em;
+    text-transform:uppercase;
+    text-shadow:0 0 12px rgba(0,0,0,.72);
+    white-space:nowrap;
+  }
+  .object-label .minor { color:rgba(165,174,184,.34); margin-left:8px; }
+
+  .obj-starwars .saber {
+    position:absolute;
+    width:126px;
+    height:5px;
+    border-radius:99px;
+    background:#fff;
+    box-shadow:0 0 5px 1px currentColor,0 0 20px 5px color-mix(in srgb,currentColor 55%,transparent);
+    transform-origin:10px 50%;
+  }
+  .obj-starwars .saber.red { color:#f23b52; transform:rotate(-22deg); top:56px; left:38px; }
+  .obj-starwars .saber.green { color:#74ef8c; transform:rotate(19deg); top:77px; left:55px; }
+  .obj-starwars .saber::after {
+    content:"";
+    position:absolute;
+    width:18px;
+    height:8px;
+    left:-12px;
+    top:-1.5px;
+    border-radius:2px;
+    background:#8a929c;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);
+  }
+
+  .obj-cyberpunk .cyber-ring {
+    position:absolute;
+    width:92px;
+    height:92px;
+    left:64px;
+    top:18px;
+    border:2px solid #f4df42;
+    border-radius:50%;
+    box-shadow:0 0 10px rgba(244,223,66,.32),0 0 34px rgba(244,223,66,.12),inset 0 0 24px rgba(244,223,66,.07);
+    animation:cyberSpin 4.5s linear infinite;
+  }
+  .obj-cyberpunk .cyber-ring::before,
+  .obj-cyberpunk .cyber-ring::after {
+    content:"";
+    position:absolute;
+    inset:-10px;
+    border:1px dashed rgba(244,223,66,.18);
+    border-radius:50%;
+  }
+  .obj-cyberpunk .cyber-ring::after { inset:17px; border-style:solid; border-color:rgba(244,223,66,.20); }
+  .obj-cyberpunk .cyber-mark {
+    position:absolute;
+    left:74px;
+    top:57px;
+    color:#f4df42;
+    font:900 8px monospace;
+    letter-spacing:.18em;
+  }
+  @keyframes cyberSpin { to { transform:rotate(360deg); } }
+
+  .obj-dragonball .dragon-orb {
+    position:absolute;
+    left:70px;
+    top:22px;
+    width:76px;
+    height:76px;
+    border-radius:50%;
+    background:radial-gradient(circle at 34% 28%,#fff6b7 0 5%,#f2a72c 18%,#dc6e18 66%,#8e3d0a 100%);
+    box-shadow:0 0 24px rgba(235,133,31,.25),inset -10px -12px 20px rgba(67,20,4,.24);
+    display:grid;
+    place-items:center;
+    color:#d74415;
+    font-size:17px;
+    text-shadow:0 1px 2px rgba(255,216,113,.3);
+    transform:rotate(-9deg);
+  }
+  .obj-dragonball .dragon-orb::before { content:"★★★★"; letter-spacing:2px; transform:rotate(9deg); }
+
+  .obj-bluelock .football {
+    position:absolute;
+    left:72px;
+    top:26px;
+    width:72px;
+    height:72px;
+    border-radius:50%;
+    background:
+      radial-gradient(circle at center,#111823 0 9px,transparent 10px),
+      conic-gradient(from 10deg,#67c9ff 0 11%,#0b131c 11% 18%,#67c9ff 18% 28%,#0b131c 28% 36%,#67c9ff 36% 46%,#0b131c 46% 54%,#67c9ff 54% 64%,#0b131c 64% 72%,#67c9ff 72% 82%,#0b131c 82% 90%,#67c9ff 90% 100%);
+    box-shadow:0 0 25px rgba(78,166,224,.20);
+  }
+  .obj-bluelock .football::after {
+    content:"";
+    position:absolute;
+    left:-36px;
+    top:35px;
+    width:140px;
+    height:1px;
+    background:linear-gradient(90deg,transparent,rgba(92,193,255,.5),transparent);
+    box-shadow:0 0 14px rgba(92,193,255,.18);
+    transform:rotate(-14deg);
+  }
+
+  .obj-naruto .kunai {
+    position:absolute;
+    left:76px;
+    top:56px;
+    width:100px;
+    height:4px;
+    background:linear-gradient(90deg,#c5ccd5,#6b7580 74%,#313842);
+    transform:rotate(-26deg);
+    box-shadow:0 0 14px rgba(174,190,205,.10);
+  }
+  .obj-naruto .kunai::before {
+    content:"";
+    position:absolute;
+    right:-12px;
+    top:-8px;
+    width:18px;
+    height:18px;
+    background:linear-gradient(145deg,#aeb8c4,#4d5660);
+    clip-path:polygon(100% 50%,0 0,25% 50%,0 100%);
+  }
+  .obj-naruto .kunai::after {
+    content:"";
+    position:absolute;
+    left:-10px;
+    top:-6px;
+    width:12px;
+    height:12px;
+    border:2px solid #89929d;
+    border-radius:50%;
+  }
+
+  .obj-onepiece .flag {
+    position:absolute;
+    left:74px;
+    top:21px;
+    width:94px;
+    height:76px;
+    transform:rotate(-4deg);
+  }
+  .obj-onepiece .flag::before {
+    content:"☠";
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    font-size:62px;
+    color:#d7dde3;
+    text-shadow:0 0 22px rgba(215,221,227,.12);
+  }
+  .obj-onepiece .flag::after {
+    content:"";
+    position:absolute;
+    left:6px;
+    top:8px;
+    bottom:-15px;
+    width:1px;
+    background:rgba(190,198,208,.58);
+  }
+
+  .obj-aot .blade {
+    position:absolute;
+    width:122px;
+    height:5px;
+    background:linear-gradient(90deg,#737c87,#e3e7eb,#8c96a2);
+    box-shadow:0 0 12px rgba(215,222,230,.12);
+    border-radius:3px;
+  }
+  .obj-aot .blade.one { left:44px; top:47px; transform:rotate(-43deg); }
+  .obj-aot .blade.two { left:68px; top:79px; transform:rotate(-43deg); }
+  .obj-aot .blade::after {
+    content:"";
+    position:absolute;
+    left:-13px;
+    top:-4px;
+    width:13px;
+    height:13px;
+    border:2px solid #69727d;
+    border-radius:2px;
+  }
+
+  .obj-eva .nerv-mark {
+    position:absolute;
+    left:73px;
+    top:22px;
+    width:78px;
+    height:78px;
+    border:2px solid #b078f1;
+    background:rgba(126,77,196,.06);
+    box-shadow:0 0 24px rgba(154,102,237,.18);
+    clip-path:polygon(50% 0,100% 100%,0 100%);
+  }
+  .obj-eva .nerv-mark::after {
+    content:"NERV";
+    position:absolute;
+    left:22px;
+    bottom:11px;
+    color:#c28bff;
+    font:900 8px monospace;
+    letter-spacing:.13em;
+  }
+
+  .obj-solo .gate {
+    position:absolute;
+    left:77px;
+    top:15px;
+    width:68px;
+    height:100px;
+    border:2px solid #92a8ff;
+    border-radius:42px 42px 12px 12px;
+    box-shadow:0 0 30px rgba(93,114,235,.16),inset 0 0 28px rgba(93,114,235,.10);
+  }
+  .obj-solo .gate::after {
+    content:"";
+    position:absolute;
+    inset:17px 25px;
+    border:1px solid rgba(157,173,255,.5);
+    border-radius:50%;
+  }
+
+  .obj-deathnote .book {
+    position:absolute;
+    left:62px;
+    top:25px;
+    width:104px;
+    height:72px;
+    border:1px solid rgba(231,235,239,.22);
+    background:linear-gradient(160deg,#111316,#020304);
+    box-shadow:0 12px 26px rgba(0,0,0,.35),0 0 22px rgba(0,0,0,.26);
+    transform:rotate(-8deg);
+  }
+  .obj-deathnote .book::before {
+    content:"DEATH NOTE";
+    position:absolute;
+    inset:23px 0 0;
+    text-align:center;
+    color:#cfd4da;
+    font:600 11px Georgia,serif;
+    letter-spacing:.08em;
+  }
+  .obj-deathnote .book::after {
+    content:"";
+    position:absolute;
+    left:13px;
+    top:12px;
+    width:76px;
+    height:1px;
+    background:rgba(225,230,236,.12);
+  }
+
+  .obj-marvel .arc {
+    position:absolute;
+    left:55px;
+    top:18px;
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    border:2px solid transparent;
+    border-top-color:#e85b62;
+    border-right-color:#e6b95e;
+    box-shadow:0 0 25px rgba(226,130,103,.15);
+    transform:rotate(18deg);
+  }
+  .obj-marvel .arc::after {
+    content:"";
+    position:absolute;
+    inset:22px;
+    border:1px solid rgba(235,203,118,.3);
+    border-radius:50%;
+  }
+  .obj-marvel .arc::before {
+    content:"MARVEL";
+    position:absolute;
+    left:32px;
+    top:49px;
+    color:rgba(238,218,162,.56);
+    font:900 7px monospace;
+    letter-spacing:.16em;
+  }
+
+  .obj-dc .seal {
+    position:absolute;
+    left:70px;
+    top:21px;
+    width:82px;
+    height:82px;
+    border-radius:50%;
+    border:1px solid rgba(116,190,238,.45);
+    box-shadow:0 0 24px rgba(68,140,207,.18),inset 0 0 24px rgba(68,140,207,.09);
+    display:grid;
+    place-items:center;
+    color:#79c9ff;
+    font:900 27px Georgia,serif;
+    letter-spacing:-.1em;
+  }
+  .obj-dc .seal::after {
+    content:"EARTH 0";
+    position:absolute;
+    bottom:-15px;
+    color:rgba(151,193,221,.38);
+    font:800 7px monospace;
+    letter-spacing:.15em;
+  }
+
+  .obj-watchdogs .scan {
+    position:absolute;
+    left:62px;
+    top:14px;
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    border:1px solid rgba(111,168,208,.48);
+    box-shadow:0 0 20px rgba(92,143,185,.14);
+  }
+  .obj-watchdogs .scan::before {
+    content:"";
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:42px;
+    height:1px;
+    background:#82bcdf;
+    box-shadow:0 0 10px rgba(130,188,223,.38);
+    transform-origin:left center;
+    animation:scanRotate 2.8s linear infinite;
+  }
+  .obj-watchdogs .scan::after {
+    content:"ctOS";
+    position:absolute;
+    inset:43px 0 auto;
+    text-align:center;
+    color:rgba(143,196,226,.5);
+    font:900 8px monospace;
+    letter-spacing:.18em;
+  }
+  @keyframes scanRotate { to { transform:rotate(360deg); } }
+
+  .obj-witcher .medallion {
+    position:absolute;
+    left:76px;
+    top:20px;
+    width:74px;
+    height:74px;
+    border-radius:50%;
+    border:2px solid #bcc2c9;
+    box-shadow:0 0 16px rgba(194,199,205,.16),inset 0 0 18px rgba(194,199,205,.08);
+  }
+  .obj-witcher .medallion::before {
+    content:"🐺";
+    position:absolute;
+    inset:7px;
+    display:grid;
+    place-items:center;
+    filter:grayscale(1);
+    font-size:35px;
+    opacity:.76;
+  }
+  .obj-witcher .medallion::after {
+    content:"WITCHER";
+    position:absolute;
+    left:8px;
+    top:81px;
+    color:rgba(192,201,210,.36);
+    font:800 7px monospace;
+    letter-spacing:.16em;
+  }
+
+  .obj-berserk .greatsword {
+    position:absolute;
+    left:53px;
+    top:17px;
+    width:118px;
+    height:18px;
+    background:linear-gradient(180deg,#0e1115,#49505a,#0e1115);
+    transform:rotate(-33deg);
+    box-shadow:0 0 20px rgba(0,0,0,.35);
+  }
+  .obj-berserk .greatsword::before {
+    content:"";
+    position:absolute;
+    left:-11px;
+    top:-7px;
+    width:10px;
+    height:32px;
+    background:#20252b;
+  }
+  .obj-berserk .greatsword::after {
+    content:"";
+    position:absolute;
+    right:-17px;
+    top:5px;
+    border-left:20px solid #7a828c;
+    border-top:4px solid transparent;
+    border-bottom:4px solid transparent;
+  }
+
+  .obj-castlevania .bat {
+    position:absolute;
+    left:61px;
+    top:30px;
+    width:108px;
+    height:60px;
+    color:#9f6b7b;
+  }
+  .obj-castlevania .bat::before {
+    content:"✦";
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    font-size:42px;
+    text-shadow:-25px 10px 0 rgba(159,107,123,.44),25px 10px 0 rgba(159,107,123,.44);
+  }
+  .obj-castlevania .bat::after {
+    content:"CASTLEVANIA";
+    position:absolute;
+    left:17px;
+    top:57px;
+    color:rgba(204,170,181,.35);
+    font:800 7px monospace;
+    letter-spacing:.15em;
+  }
+
+  .obj-hutt .coin {
+    position:absolute;
+    left:77px;
+    top:26px;
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 28%,#f8d67c,#be8531 50%,#5c3b12);
+    border:2px solid #d0a34d;
+    box-shadow:0 0 25px rgba(201,151,57,.16),inset -7px -10px 14px rgba(73,41,8,.24);
+    display:grid;
+    place-items:center;
+    color:#5b3a0f;
+    font:900 18px Georgia,serif;
+  }
+  .obj-hutt .coin::before { content:"H"; }
+  .obj-hutt .coin::after {
+    content:"UNDERWORLD";
+    position:absolute;
+    top:80px;
+    color:rgba(210,180,121,.30);
+    font:800 7px monospace;
+    letter-spacing:.14em;
+  }
+
+  .obj-scp .scp-label {
+    position:absolute;
+    left:56px;
+    top:39px;
+    width:110px;
+    height:48px;
+    border:1px solid rgba(226,65,71,.55);
+    background:linear-gradient(135deg,rgba(116,17,21,.46),rgba(30,8,9,.68));
+    box-shadow:0 0 20px rgba(202,40,46,.12);
+    display:grid;
+    place-items:center;
+    color:#ff7479;
+    font:900 14px monospace;
+    letter-spacing:.18em;
+  }
+  .obj-scp .scp-label::after {
+    content:"SITE-19 / 173";
+    position:absolute;
+    top:51px;
+    color:rgba(246,119,123,.34);
+    font:800 7px monospace;
+    letter-spacing:.12em;
+  }
+
+  .obj-walten .cassette {
+    position:absolute;
+    left:58px;
+    top:27px;
+    width:108px;
+    height:66px;
+    border:1px solid rgba(155,191,168,.38);
+    background:linear-gradient(160deg,#18231e,#090d0b);
+    box-shadow:0 0 22px rgba(99,151,116,.12);
+  }
+  .obj-walten .cassette::before {
+    content:"";
+    position:absolute;
+    left:33px;
+    top:17px;
+    width:40px;
+    height:26px;
+    border:1px solid rgba(194,210,202,.24);
+    border-radius:50%;
+    box-shadow:inset 0 0 0 5px rgba(7,12,9,.7);
+  }
+  .obj-walten .cassette::after {
+    content:"BON'S BURGERS";
+    position:absolute;
+    left:10px;
+    bottom:7px;
+    color:rgba(185,209,194,.4);
+    font:800 6px monospace;
+    letter-spacing:.10em;
+  }
+
+  .obj-harry .quill {
+    position:absolute;
+    left:59px;
+    top:17px;
+    width:118px;
+    height:60px;
+    transform:rotate(-24deg);
+    color:#d3b36d;
+  }
+  .obj-harry .quill::before {
+    content:"✦";
+    position:absolute;
+    right:6px;
+    top:9px;
+    font-size:38px;
+  }
+  .obj-harry .quill::after {
+    content:"";
+    position:absolute;
+    left:20px;
+    top:34px;
+    width:83px;
+    height:1px;
+    background:linear-gradient(90deg,transparent,#d7be81,#725d36);
+    box-shadow:0 0 8px rgba(212,180,99,.22);
+  }
+
+  .obj-opm .impact {
+    position:absolute;
+    left:55px;
+    top:18px;
+    width:112px;
+    height:112px;
+    border-radius:50%;
+    border:5px solid rgba(235,133,69,.72);
+    box-shadow:0 0 20px rgba(244,129,60,.18),inset 0 0 22px rgba(238,103,58,.08);
+    transform:scale(.82);
+  }
+  .obj-opm .impact::before,
+  .obj-opm .impact::after {
+    content:"";
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:150px;
+    height:2px;
+    background:linear-gradient(90deg,transparent,rgba(242,145,75,.62),transparent);
+    transform:translate(-50%,-50%) rotate(18deg);
+  }
+  .obj-opm .impact::after {
+    transform:translate(-50%,-50%) rotate(-18deg);
+    width:126px;
+  }
+
+  .obj-jjk .seal {
+    position:absolute;
+    left:66px;
+    top:16px;
+    width:92px;
+    height:92px;
+    border:1px solid rgba(176,125,232,.38);
+    box-shadow:0 0 28px rgba(139,83,199,.12),inset 0 0 24px rgba(139,83,199,.09);
+    transform:rotate(22deg);
+  }
+  .obj-jjk .seal::before {
+    content:"呪";
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    color:rgba(218,188,245,.66);
+    font-size:34px;
+    transform:rotate(-22deg);
+  }
+
+  .obj-breakingbad .crystal {
+    position:absolute;
+    left:76px;
+    top:22px;
+    width:76px;
+    height:82px;
+    background:linear-gradient(145deg,#d5f06e 0 17%,#8eb43f 48%,#455d22 100%);
+    clip-path:polygon(40% 0,72% 13%,100% 48%,77% 100%,33% 82%,0 48%);
+    box-shadow:0 0 26px rgba(185,212,88,.22);
+    filter:saturate(1.12);
+  }
+  .obj-breakingbad .crystal::after {
+    content:"C₁₀H₁₅N";
+    position:absolute;
+    left:9px;
+    top:39px;
+    color:rgba(28,41,12,.70);
+    font:900 9px monospace;
+    letter-spacing:.04em;
+  }
+
+  .obj-clonewars .republic {
+    position:absolute;
+    left:61px;
+    top:20px;
+    width:106px;
+    height:86px;
+    border:1px solid rgba(196,167,107,.38);
+    border-radius:50%;
+    box-shadow:0 0 20px rgba(196,167,107,.12);
+  }
+  .obj-clonewars .republic::before {
+    content:"REPUBLIC";
+    position:absolute;
+    inset:32px 0 0;
+    text-align:center;
+    color:rgba(224,200,145,.56);
+    font:900 8px monospace;
+    letter-spacing:.16em;
+  }
+
+  .obj-jojo .stand {
+    position:absolute;
+    left:66px;
+    top:20px;
+    width:92px;
+    height:92px;
+    border-radius:50%;
+    border:2px solid #d082ef;
+    box-shadow:0 0 20px rgba(208,130,239,.17),inset 0 0 24px rgba(208,130,239,.08);
+    transform:rotate(13deg);
+  }
+  .obj-jojo .stand::before {
+    content:"↗";
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    color:#d8a0f2;
+    font:900 47px Georgia,serif;
+  }
+
+  .card, .season-cover-link, .nav a, .filter, .search { position:relative; z-index:4; }
+  .topbar, .hero, .section, .archive-note, footer { position:relative; z-index:3; }
+
+  @media (max-width:900px) {
+    .archive-object { transform-origin:center; }
+    .archive-object .object-label { font-size:6px; }
+  }
+  @media (max-width:640px) {
+    .archive-object { width:180px; height:120px; }
+    .archive-object .object-label { display:none; }
+    .archive-scanline { animation-duration:14s; opacity:.55; }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    html { scroll-behavior:auto; }
+    .archive-noise, .archive-scanline, .archive-particle, .archive-object, .archive-status, .archive-status::before,
+    .obj-cyberpunk .cyber-ring, .obj-watchdogs .scan::before { animation:none !important; }
+    .archive-object { opacity:.06 !important; transform:none !important; }
+  }
+
   </style>
 </head>
 <body>
   <main class="app">
+
+    <div class="archive-atmosphere" aria-hidden="true">
+      <div class="archive-noise"></div>
+      <div class="archive-scanline"></div>
+      <div class="archive-particles" id="archiveParticles"></div>
+      <div class="archive-objects" id="archiveObjects"></div>
+    </div>
     <header class="topbar">
       <div class="shell topbar-inner">
         <a class="brand" href="#top">SIMULATOR<span>ARCHIVE</span></a>
@@ -857,6 +1622,151 @@
       signalIndex = (signalIndex + 1) % signals.length;
       signal.textContent = signals[signalIndex];
     }, 4200);
+
+    /* Living archive atmosphere */
+    const particleField = document.getElementById("archiveParticles");
+    for (let i = 0; i < 28; i++) {
+      const p = document.createElement("span");
+      p.className = "archive-particle";
+      p.style.left = (Math.random() * 100).toFixed(2) + "%";
+      p.style.top = (Math.random() * 100).toFixed(2) + "%";
+      p.style.setProperty("--dx", (Math.random() * 70 - 35).toFixed(1) + "px");
+      p.style.setProperty("--dy", (Math.random() * 90 - 45).toFixed(1) + "px");
+      p.style.setProperty("--duration", (7 + Math.random() * 11).toFixed(2) + "s");
+      p.style.setProperty("--delay", (-Math.random() * 12).toFixed(2) + "s");
+      particleField.appendChild(p);
+    }
+
+    const archiveObjects = document.getElementById("archiveObjects");
+    const objectLibrary = [
+      ["starwars","STAR WARS","01","<span class='saber red'></span><span class='saber green'></span>"],
+      ["onepiece","ONE PIECE","02","<span class='flag'></span>"],
+      ["harry","HARRY POTTER","03","<span class='quill'></span>"],
+      ["breakingbad","BREAKING BAD","04","<span class='crystal'></span>"],
+      ["marvel","MARVEL EARTH 616","05","<span class='arc'></span>"],
+      ["dc","DC EARTH 0","06","<span class='seal'>DC</span>"],
+      ["scp","SCP","07","<span class='scp-label'>SCP</span>"],
+      ["eva","EVANGELION","08","<span class='nerv-mark'></span>"],
+      ["solo","SOLO LEVELING","09","<span class='gate'></span>"],
+      ["aot","ATTACK ON TITAN","10","<span class='blade one'></span><span class='blade two'></span>"],
+      ["opm","ONE PUNCH MAN","11","<span class='impact'></span>"],
+      ["naruto","NARUTO","12","<span class='kunai'></span>"],
+      ["dragonball","DRAGON BALL","13","<span class='dragon-orb'></span>"],
+      ["bluelock","BLUE LOCK","14","<span class='football'></span>"],
+      ["walten","THE WALTEN FILES","15","<span class='cassette'></span>"],
+      ["cyberpunk","CYBERPUNK 2077","16","<span class='cyber-ring'></span><span class='cyber-mark'>2077</span>"],
+      ["witcher","THE WITCHER","17","<span class='medallion'></span>"],
+      ["jojo","JOJO","18","<span class='stand'></span>"],
+      ["deathnote","DEATH NOTE","19","<span class='book'></span>"],
+      ["watchdogs","WATCH DOGS","20","<span class='scan'></span>"],
+      ["clonewars","CLONE WARS","21","<span class='republic'></span>"],
+      ["hutt","HUTT SIMULATOR","22","<span class='coin'></span>"],
+      ["castlevania","CASTLEVANIA","23","<span class='bat'></span>"],
+      ["berserk","BERSERK","24","<span class='greatsword'></span>"],
+      ["jjk","JUJUTSU KAISEN","25","<span class='seal'></span>"]
+    ];
+
+    const objectPositions = [
+      { sx:"-18vw", sy:"16vh", ex:"78vw", ey:"74vh", sr:"-10deg", er:"10deg" },
+      { sx:"108vw", sy:"20vh", ex:"-22vw", ey:"62vh", sr:"8deg", er:"-12deg" },
+      { sx:"72vw", sy:"-14vh", ex:"20vw", ey:"82vh", sr:"-7deg", er:"8deg" },
+      { sx:"-16vw", sy:"78vh", ex:"82vw", ey:"22vh", sr:"13deg", er:"-7deg" },
+      { sx:"105vw", sy:"80vh", ex:"10vw", ey:"12vh", sr:"-13deg", er:"6deg" },
+      { sx:"20vw", sy:"-18vh", ex:"93vw", ey:"70vh", sr:"6deg", er:"-9deg" }
+    ];
+    let lastObjectIndex = -1;
+    let objectTimer = null;
+
+    function chooseObject() {
+      let index = Math.floor(Math.random() * objectLibrary.length);
+      if (objectLibrary.length > 1 && index === lastObjectIndex) index = (index + 1) % objectLibrary.length;
+      lastObjectIndex = index;
+      return objectLibrary[index];
+    }
+
+    function spawnArchiveObject() {
+      const picked = chooseObject();
+      const kind = picked[0];
+      const name = picked[1];
+      const number = picked[2];
+      const art = picked[3];
+      const path = objectPositions[Math.floor(Math.random() * objectPositions.length)];
+      const el = document.createElement("div");
+      el.className = "archive-object obj-" + kind;
+      el.style.setProperty("--sx", path.sx);
+      el.style.setProperty("--sy", path.sy);
+      el.style.setProperty("--ex", path.ex);
+      el.style.setProperty("--ey", path.ey);
+      el.style.setProperty("--sr", path.sr);
+      el.style.setProperty("--er", path.er);
+      el.style.setProperty("--object-duration", (8 + Math.random() * 4).toFixed(2) + "s");
+      el.style.setProperty("--object-opacity", (0.46 + Math.random() * 0.26).toFixed(2));
+      el.innerHTML =
+        "<div class='object-inner'>" + art + "</div>" +
+        "<div class='object-label'>ARCHIVE OBJECT // " + name +
+        "<span class='minor'>INDEX " + number + "</span></div>";
+      archiveObjects.appendChild(el);
+
+      const removeAfter = parseFloat(getComputedStyle(el).animationDuration) * 1000 + 250;
+      setTimeout(function() { el.remove(); }, removeAfter);
+      objectTimer = setTimeout(function() {
+        objectTimer = null;
+        spawnArchiveObject();
+      }, 4700 + Math.random() * 6200);
+    }
+
+    function stopArchiveObjects() {
+      document.querySelectorAll(".archive-object").forEach(function(el) { el.remove(); });
+      if (objectTimer) clearTimeout(objectTimer);
+      objectTimer = null;
+    }
+
+    function startArchiveObjects() {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (!objectTimer) {
+        objectTimer = setTimeout(function() {
+          objectTimer = null;
+          spawnArchiveObject();
+        }, 2800);
+      }
+    }
+
+    document.addEventListener("visibilitychange", function() {
+      if (document.hidden) stopArchiveObjects();
+      else startArchiveObjects();
+    });
+    startArchiveObjects();
+
+    const pointerTarget = document.querySelector(".hero");
+    if (pointerTarget && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      pointerTarget.addEventListener("pointermove", function(event) {
+        const x = event.clientX / window.innerWidth - 0.5;
+        const y = event.clientY / window.innerHeight - 0.5;
+        document.querySelectorAll(".object-inner").forEach(function(inner) {
+          inner.style.transform =
+            "translate(-50%,-50%) translate3d(" +
+            (x * -8).toFixed(2) + "px," +
+            (y * -6).toFixed(2) + "px,0)";
+        });
+      });
+    }
+
+    document.querySelectorAll(".card.has-cover").forEach(function(card) {
+      card.addEventListener("pointermove", function(event) {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        const r = card.getBoundingClientRect();
+        const px = (event.clientX - r.left) / r.width - 0.5;
+        const py = (event.clientY - r.top) / r.height - 0.5;
+        card.style.transform =
+          "perspective(900px) translateY(-5px) rotateX(" +
+          (-py * 2.2).toFixed(2) + "deg) rotateY(" +
+          (px * 2.2).toFixed(2) + "deg)";
+      });
+      card.addEventListener("pointerleave", function() {
+        card.style.transform = "";
+      });
+    });
+
   </script>
 </body>
 </html>
