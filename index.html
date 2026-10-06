@@ -1751,18 +1751,36 @@
     });
     startArchiveObjects();
 
-    const pointerTarget = document.querySelector(".hero");
-    if (pointerTarget && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      pointerTarget.addEventListener("pointermove", function(event) {
-        const x = event.clientX / window.innerWidth - 0.5;
-        const y = event.clientY / window.innerHeight - 0.5;
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      let pointerX = 0;
+      let pointerY = 0;
+
+      document.addEventListener("pointermove", function(event) {
+        pointerX = event.clientX / window.innerWidth - 0.5;
+        pointerY = event.clientY / window.innerHeight - 0.5;
+
         document.querySelectorAll(".object-inner").forEach(function(inner) {
           inner.style.transform =
             "translate(-50%,-50%) translate3d(" +
-            (x * -8).toFixed(2) + "px," +
-            (y * -6).toFixed(2) + "px,0)";
+            (pointerX * -18).toFixed(2) + "px," +
+            (pointerY * -13).toFixed(2) + "px,0)";
+        });
+      }, { passive:true });
+
+      document.addEventListener("pointerleave", function() {
+        document.querySelectorAll(".object-inner").forEach(function(inner) {
+          inner.style.transform = "translate(-50%,-50%) translate3d(0,0,0)";
         });
       });
+
+      window.setInterval(function() {
+        document.querySelectorAll(".archive-object .object-inner").forEach(function(inner) {
+          inner.style.filter =
+            "drop-shadow(" +
+            (pointerX * 4).toFixed(2) + "px " +
+            (pointerY * 4).toFixed(2) + "px 18px rgba(0,0,0,.22))";
+        });
+      }, 80);
     }
 
     document.querySelectorAll(".card.has-cover").forEach(function(card) {
