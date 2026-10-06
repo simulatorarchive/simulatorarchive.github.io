@@ -1706,6 +1706,78 @@
     text-transform:uppercase;
   }
 
+  .timeline-register {
+    position:relative;
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    border:1px solid rgba(190,198,208,.11);
+    background:#08090c;
+  }
+  .timeline-register::before {
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    top:54px;
+    height:1px;
+    background:rgba(190,198,208,.08);
+  }
+  .timeline-file {
+    position:relative;
+    min-height:94px;
+    padding:16px 13px 13px;
+    border-right:1px solid rgba(190,198,208,.07);
+    border-bottom:1px solid rgba(190,198,208,.07);
+    text-decoration:none;
+    transition:background .18s ease,border-color .18s ease,transform .18s ease;
+    cursor:pointer;
+  }
+  .timeline-file:nth-child(5n) { border-right:0; }
+  .timeline-file:hover {
+    background:rgba(255,255,255,.025);
+    transform:translateY(-2px);
+  }
+  .timeline-file .timeline-id {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    color:#56616d;
+    font:800 7px monospace;
+    letter-spacing:.13em;
+  }
+  .timeline-file .timeline-state {
+    color:#68737e;
+    font:700 6px monospace;
+    letter-spacing:.10em;
+  }
+  .timeline-file strong {
+    display:block;
+    margin-top:14px;
+    color:#bfc6ce;
+    font-size:8px;
+    line-height:1.42;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+  }
+  .timeline-file span:last-child {
+    display:block;
+    margin-top:5px;
+    color:#49535e;
+    font:700 6px monospace;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .modal-footer-line {
+    display:flex;
+    justify-content:space-between;
+    gap:14px;
+    margin-top:16px;
+    color:#4b5662;
+    font:700 6.5px monospace;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
   .activity-layout {
     display:grid;
     grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);
@@ -1825,8 +1897,15 @@
   .card:hover .archive-corner { color:#737e89; }
   @media (max-width:900px) {
     .activity-layout { grid-template-columns:1fr; }
+    .timeline-register { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .timeline-file:nth-child(5n) { border-right:1px solid rgba(190,198,208,.07); }
+    .timeline-file:nth-child(3n) { border-right:0; }
   }
   @media (max-width:640px) {
+    .timeline-register { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .timeline-file:nth-child(3n) { border-right:1px solid rgba(190,198,208,.07); }
+    .timeline-file:nth-child(2n) { border-right:0; }
+    .modal-footer-line { flex-direction:column; gap:5px; }
     .archive-runtime { right:11px; bottom:11px; width:min(330px,calc(100vw - 22px)); }
     .detected-file { top:70px; }
     .activity-entry { grid-template-columns:55px 1fr; }
@@ -1853,7 +1932,10 @@
         <div class="modal-cell"><span>Activity</span><b id="modalActivity">UNKNOWN</b></div>
         <div class="modal-cell"><span>Region</span><b id="modalRegion">UNKNOWN</b></div>
         <div class="modal-cell"><span>Continuation</span><b id="modalContinuation">OBSERVING</b></div>
+        <div class="modal-cell"><span>World model</span><b id="modalModel">INDEPENDENT</b></div>
+        <div class="modal-cell"><span>Integrity</span><b id="modalIntegrity">VALID</b></div>
       </div>
+      <div class="modal-footer-line"><span id="modalFooterLeft">ARCHIVE RECORD · ??</span><span id="modalFooterRight">OBSERVATION CONTINUES</span></div>
       <a class="modal-open-world hidden" id="modalOpenWorld" href="#" target="_blank" rel="noopener noreferrer">OPEN WORLD ↗</a>
     </div></div>
 
@@ -1872,7 +1954,7 @@
         <nav class="nav" aria-label="Archive navigation">
           <a href="#featured">Featured</a>
           <a href="#new">New worlds</a>
-          <a href="#activity">Activity</a><a href="#seasons">Seasons</a>
+          <a href="#activity">Log</a><a href="#seasons">Seasons</a>
         </nav>
         <div class="archive-status">Archive online</div>
       </div>
@@ -1982,13 +2064,13 @@
     <section class="section" id="activity">
       <div class="shell">
         <div class="section-head">
-          <h2>Archive Activity</h2>
-          <p>Live session · observation continues</p>
+          <h2>Archive Log</h2>
+          <p>Current session · observation continues</p>
         </div>
         <div class="activity-layout">
           <div class="activity-panel">
             <div class="section-head" style="margin:0;padding-bottom:12px;">
-              <h2>Recent Activity</h2>
+              <h2>Session Entries</h2>
               <p id="activityClock">LOCAL SESSION</p>
             </div>
             <div class="activity-list" id="activityList"></div>
@@ -2051,6 +2133,17 @@
           <a class="card has-cover" style="--accent:#a66ad6" data-archive-id="025" data-status="STABLE" data-activity="ONGOING" data-name="Jujutsu Kaisen Living World" data-type="anime" href="https://janitorai.com/characters/89b10859-33ac-4a2b-9583-68d34177dba9_character-jujutsu-kaisen-living-world" target="_blank" rel="noopener noreferrer"><img class="card-cover" src="images/JUJUTSUKAISENLIVINGWORLD.png" alt="Jujutsu Kaisen Living World cover"><span class="index">25</span><span class="type">Anime</span><h3>Jujutsu Kaisen Living World</h3><div class="meta-row"><span>FILE 25</span><span class="state">ACTIVE</span></div><p>Curses, sorcerers and ordinary lives moving beneath unseen danger.</p></a>
         </div>
         <div class="empty" id="empty">No archived world matches your search.</div>
+      </div>
+    </section>
+
+    
+    <section class="section" id="timeline">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Archive Timeline</h2>
+          <p>Indexed files · chronological register</p>
+        </div>
+        <div class="timeline-register" id="timelineRegister"></div>
       </div>
     </section>
 
@@ -2381,6 +2474,10 @@
     const modalActivity = document.getElementById("modalActivity");
     const modalRegion = document.getElementById("modalRegion");
     const modalContinuation = document.getElementById("modalContinuation");
+    const modalModel = document.getElementById("modalModel");
+    const modalIntegrity = document.getElementById("modalIntegrity");
+    const modalFooterLeft = document.getElementById("modalFooterLeft");
+    const modalFooterRight = document.getElementById("modalFooterRight");
     const modalOpenWorld = document.getElementById("modalOpenWorld");
 
     const regionMap = {
@@ -2416,6 +2513,10 @@
       modalActivity.textContent="UNKNOWN";
       modalRegion.textContent="UNKNOWN";
       modalContinuation.textContent="OBSERVING";
+      modalModel.textContent="INDEPENDENT";
+      modalIntegrity.textContent="UNRESOLVED";
+      modalFooterLeft.textContent="ARCHIVE RECORD · ??";
+      modalFooterRight.textContent="OBSERVATION CONTINUES";
       modalOpenWorld.classList.add("hidden");
       modalOpenWorld.removeAttribute("href");
     }
@@ -2435,6 +2536,10 @@
       modalActivity.textContent=activity;
       modalRegion.textContent=regionMap[kind] || "ARCHIVE REGION";
       modalContinuation.textContent="ONGOING";
+      modalModel.textContent="INDEPENDENT";
+      modalIntegrity.textContent="VALID";
+      modalFooterLeft.textContent="ARCHIVE RECORD · FILE " + id;
+      modalFooterRight.textContent="OBSERVATION CONTINUES";
       modalOpenWorld.href=card.href;
       modalOpenWorld.classList.remove("hidden");
     }
@@ -2476,6 +2581,7 @@
       card.addEventListener("click", function(event) {
         event.preventDefault();
         openArchiveModal(card);
+        pushActivity("DOSSIER OPENED","FILE " + (card.dataset.archiveId || "??"), "OBSERVING");
       });
       card.addEventListener("pointerenter", function() {
         const name = (card.dataset.name || "").toLowerCase();
@@ -2527,7 +2633,12 @@
     const activityClock = document.getElementById("activityClock");
     const worldCount = document.getElementById("worldCount");
     const seasonCount = document.getElementById("seasonCount");
+    const timelineRegister = document.getElementById("timelineRegister");
     const liveActivity = [];
+
+    function currentTime() {
+      return new Date().toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
+    }
     function pushActivity(action, subject, state) {
       liveActivity.unshift({
         time: currentTime(),
@@ -2535,12 +2646,10 @@
         subject: subject,
         state: state
       });
-      if (liveActivity.length > 6) liveActivity.length = 6;
+      if (liveActivity.length > 8) liveActivity.length = 8;
       renderActivity();
     }
-    function currentTime() {
-      return new Date().toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
-    }
+
     function updateArchiveCounts() {
       const count = document.querySelectorAll("#featuredGrid .card").length;
       const seasons = document.querySelectorAll(".season").length;
@@ -2551,36 +2660,44 @@
     updateArchiveCounts();
     setInterval(updateArchiveCounts,60000);
 
-    const activityPool = [
-      ["INDEX PASS","STAR WARS","ACTIVE"],
-      ["WORLD WATCH","BREAKING BAD","ALBUQUERQUE"],
-      ["SIGNAL","CYBERPUNK 2077","NIGHT CITY"],
-      ["ARCHIVE CHECK","THE WITCHER","STABLE"],
-      ["INDEX PASS","JUJUTSU KAISEN","ACTIVE"],
-      ["WORLD WATCH","DRAGON BALL","ONGOING"],
-      ["CASE UPDATE","DEATH NOTE","UNRESOLVED"],
-      ["SITE WATCH","SCP","RESTRICTED"],
-      ["SEASON WATCH","OCTOBER ARCHIVE","ACTIVE"]
-    ];
-    let activityOffset = 0;
     function renderActivity() {
       if (!activityList) return;
-      const entries = [];
-      if (liveActivity.length) {
-        liveActivity.forEach(function(item) {
-          entries.push("<div class='activity-entry'><time>" + item.time + "</time><strong>" + item.action + " · " + item.subject + "</strong><span class='entry-state'>" + item.state + "</span></div>");
-        });
+      if (!liveActivity.length) {
+        activityList.innerHTML =
+          "<div class='activity-entry'><time>" + currentTime() + "</time><strong>ARCHIVE ONLINE · SESSION</strong><span class='entry-state'>OBSERVING</span></div>" +
+          "<div class='activity-entry'><time>" + currentTime() + "</time><strong>CATALOGUE LOADED · 25 FILES</strong><span class='entry-state'>INDEXED</span></div>";
+        return;
       }
-      const needed = 6 - entries.length;
-      for (let i = 0; i < needed; i++) {
-        const item = activityPool[(activityOffset + i) % activityPool.length];
-        const d = new Date(Date.now() - (i * 4 + 1) * 60000);
-        const time = d.toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
-        entries.push("<div class='activity-entry'><time>" + time + "</time><strong>" + item[0] + " · " + item[1] + "</strong><span class='entry-state'>" + item[2] + "</span></div>");
-      }
-      activityList.innerHTML = entries.join("");
+      activityList.innerHTML = liveActivity.map(function(item) {
+        return "<div class='activity-entry'><time>" + item.time + "</time><strong>" + item.action + " · " + item.subject + "</strong><span class='entry-state'>" + item.state + "</span></div>";
+      }).join("");
     }
     renderActivity();
+
+    function renderTimeline() {
+      if (!timelineRegister) return;
+      const cards = [...document.querySelectorAll("#featuredGrid .card")];
+      timelineRegister.innerHTML = cards.map(function(card) {
+        const id = card.dataset.archiveId || "??";
+        const name = card.dataset.name || "Unknown";
+        const status = card.dataset.status || "STABLE";
+        const cardType = card.querySelector(".type");
+        const type = cardType ? cardType.textContent : "ARCHIVE";
+        return "<button class='timeline-file' type='button' data-timeline-file='" + id + "'>" +
+          "<span class='timeline-id'><span>FILE " + id + "</span><span class='timeline-state'>" + status + "</span></span>" +
+          "<strong>" + name + "</strong><span>" + type + " · INDEXED</span></button>";
+      }).join("");
+      timelineRegister.querySelectorAll(".timeline-file").forEach(function(item) {
+        item.addEventListener("click", function() {
+          const card = document.querySelector('#featuredGrid .card[data-archive-id="' + item.dataset.timelineFile + '"]');
+          if (card) {
+            openArchiveModal(card);
+            pushActivity("TIMELINE ACCESS","FILE " + item.dataset.timelineFile, "OBSERVING");
+          }
+        });
+      });
+    }
+    renderTimeline();
 
     const archiveAmbientBase = document.getElementById("archiveAmbient");
     window.addEventListener("scroll", function() {
